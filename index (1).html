@@ -1,0 +1,2542 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Luyện Đọc Tiếng Việt - Lớp 2</title>
+<link rel="icon" type="image/png" href="./reading-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FFF8EC;
+    --card:#FFFFFF;
+    --ink:#000000;
+    --red:#FF5A5F;
+    --red-dark:#E0483D;
+    --green:#1FA971;
+    --green-bg:#E4F7ED;
+    --wrong-bg:#FDE8E6;
+    --blue:#2F8FB5;
+    --blue-dark:#22677F;
+    --gold:#FFB800;
+    --border:#EFE3CE;
+    --shadow: 0 10px 30px rgba(120, 90, 40, 0.12);
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  html{scroll-padding-top:env(safe-area-inset-top,0px);}
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 8% 6%, #FFE9B8 0%, transparent 45%),
+      radial-gradient(circle at 95% 0%, #CDEFE0 0%, transparent 40%),
+      var(--cream);
+    font-family:'Lexend', sans-serif;
+    color:var(--ink);
+    min-height:100%;
+  }
+  h1,h2,h3, .display{font-family:'Baloo 2', sans-serif;}
+  button{font-family:inherit;}
+  .app{max-width:760px;margin:0 auto;padding:20px 16px 60px;}
+  .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+  .brand{display:flex;align-items:center;gap:10px;}
+  .brand-badge{
+    width:44px;height:44px;border-radius:14px;
+    background:linear-gradient(135deg,var(--gold),var(--red));
+    display:flex;align-items:center;justify-content:center;font-size:22px;
+    box-shadow:0 6px 14px rgba(255,90,95,.35);
+  }
+  .brand-text h1{font-size:19px;margin:0;line-height:1.15;color:var(--blue-dark);}
+  .brand-text span{font-size:12px;color:#8a7a5c;}
+  #lockBtn{
+    border:none;background:rgba(0,0,0,0.06);width:36px;height:36px;border-radius:50%;
+    font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+    color:#7a6a4d;transition:background .15s;
+  }
+  #lockBtn:hover{background:rgba(0,0,0,0.12);}
+  #lockBtn:focus-visible{outline:3px solid var(--blue);outline-offset:2px;}
+
+  /* ---------- Student info bar ---------- */
+  .student-info{
+    display:flex;gap:10px;flex-wrap:wrap;background:var(--card);
+    border:2px solid var(--border);border-radius:16px;padding:12px;margin-bottom:16px;
+  }
+  .student-info .field{flex:1;min-width:130px;}
+  .student-info label{display:block;font-size:12px;color:#8a7a5c;margin-bottom:4px;font-weight:600;}
+  .student-info input{
+    width:100%;padding:9px 10px;border-radius:10px;border:2px solid var(--border);
+    font-size:15px;font-family:'Lexend',sans-serif;
+  }
+  .student-info input:focus-visible{outline:3px solid var(--blue);outline-offset:1px;border-color:var(--blue);}
+
+  /* ---------- Reading library ---------- */
+  .library-card{background:linear-gradient(135deg,#fff,#eef9f4);border:2px solid #cfe9d9;border-radius:18px;padding:14px;margin-bottom:16px;box-shadow:0 6px 18px rgba(47,143,181,.08);}
+  .library-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+  .library-head h2{font-size:18px;color:var(--blue-dark);margin:0;}
+  .library-head p{font-size:12px;color:#6f806e;margin:3px 0 0;}
+  .library-controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px;}
+  .library-controls select{flex:1;min-width:150px;padding:9px 10px;border-radius:10px;border:2px solid #cfe9d9;background:#fff;font-family:inherit;font-size:13px;color:#3e5b4c;}
+  .library-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:11px;}
+  .library-item{border:2px solid #dceee2;background:#fff;border-radius:13px;padding:10px;text-align:left;cursor:pointer;transition:transform .15s,border-color .15s,box-shadow .15s;}
+  .library-item:hover{transform:translateY(-2px);border-color:var(--blue);box-shadow:0 5px 14px rgba(47,143,181,.12);}
+  .library-item.active{border-color:var(--green);background:var(--green-bg);}
+  .library-item .week{font-size:11px;color:var(--blue);font-weight:700;}
+  .library-item strong{display:block;font-family:'Baloo 2';font-size:15px;color:#355647;line-height:1.2;margin:3px 0;}
+  .library-item small{display:block;color:#7a8b7c;font-size:11px;line-height:1.3;}
+  .library-note{font-size:11px;color:#718477;margin:10px 2px 0;line-height:1.45;}
+  @media(max-width:520px){.library-grid{grid-template-columns:1fr}.library-card{padding:12px}.library-head h2{font-size:17px}}
+
+  /* ---------- Reading card ---------- */
+  .reading-card{
+    background:var(--card);border-radius:22px;box-shadow:var(--shadow);
+    padding:26px 22px;border:2px solid var(--border);position:relative;overflow:hidden;
+  }
+  .reading-card::before{
+    content:"";position:absolute;top:-40px;right:-40px;width:130px;height:130px;
+    background:radial-gradient(circle,#FFE9B8 0%, transparent 70%);
+  }
+  #titleText{
+    font-family:'Baloo 2', sans-serif;font-weight:700;font-size:26px;color:var(--blue-dark);
+    margin:0 0 14px 0;line-height:1.4;text-align:center;
+  }
+  #contentText{
+    color:var(--ink);font-size:30px;line-height:1.8;font-weight:400;white-space:pre-wrap;
+  }
+  #authorText{
+    display:block;margin-top:18px;text-align:right;color:#5a4c33;font-size:20px;
+    font-weight:500;white-space:pre-wrap;
+  }
+  .w{padding:0 1px;border-radius:6px;transition:background-color .2s, color .2s, box-shadow .2s;}
+  .w.correct{background:var(--green-bg);color:var(--green);}
+  .w.wrong{background:var(--wrong-bg);color:var(--red-dark);text-decoration:underline wavy var(--red-dark) 2px;text-underline-offset:4px;}
+  .w.live{background:#EAF5FA;color:var(--blue-dark);box-shadow:0 0 0 2px rgba(47,143,181,.25);}
+  @media(prefers-reduced-motion:no-preference){.w.live{animation:word-listening 1s ease-in-out infinite;}}
+  @keyframes word-listening{50%{box-shadow:0 0 0 5px rgba(47,143,181,0);}}
+
+  .sample-btn{
+    margin-top:16px;display:inline-flex;align-items:center;gap:8px;
+    background:#EAF5FA;border:2px solid #cfe9f2;color:var(--blue-dark);
+    padding:9px 16px;border-radius:999px;font-weight:600;font-size:14px;cursor:pointer;
+  }
+  .sample-btn:focus-visible{outline:3px solid var(--blue);outline-offset:2px;}
+  .sample-btn[disabled]{opacity:.5;cursor:default;}
+
+  /* ---------- Mic control ---------- */
+  .mic-zone{display:flex;flex-direction:column;align-items:center;margin:26px 0 10px;}
+  #micBtn{
+    width:120px;height:120px;border-radius:50%;border:none;cursor:pointer;
+    background:radial-gradient(circle at 35% 30%, #FF8A8E, var(--red) 60%, var(--red-dark));
+    box-shadow:0 14px 26px rgba(224,72,61,.4);
+    display:flex;align-items:center;justify-content:center;color:#fff;font-size:44px;
+    transition:transform .15s;
+  }
+  #micBtn:active{transform:scale(.94);}
+  #micBtn:focus-visible{outline:4px solid var(--gold);outline-offset:4px;}
+  #micBtn.listening{animation:pulse 1.4s ease-in-out infinite;}
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(224,72,61,.5);}
+    70%{box-shadow:0 0 0 26px rgba(224,72,61,0);}
+    100%{box-shadow:0 0 0 0 rgba(224,72,61,0);}
+  }
+  @media (prefers-reduced-motion: reduce){ #micBtn.listening{animation:none;} }
+  #micLabel{margin-top:12px;font-family:'Baloo 2';font-weight:700;font-size:18px;color:var(--red-dark);text-align:center;}
+  #micHint{font-size:13px;color:#8a7a5c;margin-top:4px;text-align:center;}
+
+  /* ---------- Result panel ---------- */
+  .result-panel{
+    margin-top:18px;background:var(--card);border:2px solid var(--border);border-radius:18px;padding:18px;
+    display:none;
+  }
+  .result-panel.show{display:block;}
+  .score-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+  .score-circle{
+    width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-family:'Baloo 2';font-weight:800;font-size:20px;color:#fff;
+    background:conic-gradient(var(--green) calc(var(--pct)*1%), #eee 0);
+  }
+  .score-circle span{
+    width:60px;height:60px;border-radius:50%;background:var(--card);display:flex;align-items:center;justify-content:center;color:var(--green);font-size:18px;
+  }
+  .score-meta{font-size:14px;color:#5a4c33;}
+  .score-meta b{color:var(--ink);}
+  .teacher-feedback{margin-top:16px;padding:14px 16px;border-radius:15px;background:linear-gradient(135deg,#FFF7D9,#EAF8F0);border:2px solid #DDEED5;color:#4b442f;font-size:14px;line-height:1.6;}
+  .teacher-feedback .feedback-title{font-family:'Baloo 2';font-weight:800;color:var(--blue-dark);font-size:17px;margin-bottom:4px;}
+  .teacher-feedback .feedback-focus{margin-top:6px;color:var(--red-dark);font-weight:600;}
+  .feedback-stars{font-size:25px;letter-spacing:3px;color:#FFB800;margin:2px 0 4px;text-shadow:0 2px 0 #e5a500;}
+  .feedback-audio{border:0;background:#fff;border:2px solid #bfe8d3;color:var(--green);border-radius:999px;padding:7px 12px;font-weight:700;cursor:pointer;margin-top:9px;}
+  .achievement-box{margin-top:14px;padding:13px 15px;border-radius:15px;background:#FFF8E2;border:2px solid #F4DE9B;}
+  .achievement-box h3{font-family:'Baloo 2';font-size:17px;color:#9a6b00;margin:0 0 7px;}
+  .achievement-list{display:flex;flex-wrap:wrap;gap:7px;font-size:13px;color:#5a4c33;}
+  .achievement-item{background:#fff;border-radius:10px;padding:6px 9px;border:1px solid #f1dfac;}
+  .reward-burst{font-size:15px;color:#e5a500;margin-top:4px;font-weight:700;}
+  #celebrationLayer{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:70;}
+  .confetti{position:absolute;width:10px;height:16px;top:-24px;border-radius:3px;animation:confetti-fall 1.8s cubic-bezier(.2,.75,.3,1) forwards;}
+  @keyframes confetti-fall{to{transform:translate3d(var(--dx),calc(100vh + 50px),0) rotate(var(--rot));opacity:0;}}
+  @media(prefers-reduced-motion:reduce){.confetti{animation:none;opacity:0;}}
+
+  .words-panel h3{font-size:15px;color:var(--blue-dark);margin:16px 0 8px;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    display:flex;align-items:center;gap:6px;background:var(--wrong-bg);border:2px solid #f6c9c4;
+    color:var(--red-dark);padding:7px 12px;border-radius:999px;font-weight:600;font-size:15px;cursor:pointer;
+    transition:background .2s, border-color .2s, transform .1s;
+  }
+  .chip:focus-visible{outline:3px solid var(--blue);outline-offset:2px;}
+  .chip.correct-chip{background:var(--green-bg);border-color:#bfe8d3;color:var(--green);cursor:default;}
+  .chip.listening{animation:pulse 1s ease-in-out infinite;}
+  .chip.shake{animation:shake .4s;}
+  @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-4px);}75%{transform:translateX(4px);}}
+  .chip .mic-mini{font-size:13px;}
+  .chip .chip-status{font-size:12px;}
+
+  .action-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;}
+  .btn{
+    border:none;border-radius:12px;padding:12px 18px;font-weight:700;font-size:15px;cursor:pointer;
+    font-family:'Baloo 2';display:inline-flex;align-items:center;gap:8px;
+  }
+  .btn:focus-visible{outline:3px solid var(--blue);outline-offset:2px;}
+  .btn-secondary{background:#EFE9DA;color:#5a4c33;}
+  .btn-primary{background:var(--blue);color:#fff;}
+  .btn-primary:disabled{opacity:.5;cursor:default;}
+  .btn-zalo{background:#0068FF;color:#fff;}
+  .btn-teacher-add{background:var(--gold);color:#4a3400;}
+
+  .toast{
+    position:fixed;left:50%;bottom:24px;transform:translateX(-50%);
+    background:#222;color:#fff;padding:12px 18px;border-radius:12px;font-size:14px;
+    box-shadow:0 8px 20px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:opacity .25s, bottom .25s;
+    max-width:90%;text-align:center;z-index:60;
+  }
+  .toast.show{opacity:1;bottom:calc(34px + env(safe-area-inset-bottom,0px));}
+
+  .hidden{display:none !important;}
+
+  /* ---------- Modal (PIN) ---------- */
+  .modal-overlay{
+    position:fixed;inset:0;background:rgba(30,20,10,.45);display:flex;align-items:center;justify-content:center;
+    z-index:80;padding:20px;
+  }
+  .modal-box{
+    background:var(--cream);border-radius:20px;padding:26px;max-width:320px;width:100%;box-shadow:var(--shadow);
+    text-align:center;
+  }
+  .modal-box h2{margin:0 0 6px;font-size:20px;color:var(--blue-dark);}
+  .modal-box p{font-size:13px;color:#8a7a5c;margin:0 0 16px;}
+  #pinInput{
+    width:100%;text-align:center;font-size:26px;letter-spacing:10px;padding:12px;border-radius:12px;
+    border:2px solid var(--border);margin-bottom:14px;font-family:'Baloo 2';
+  }
+  #pinInput:focus-visible{outline:3px solid var(--blue);}
+  .modal-actions{display:flex;gap:10px;}
+  .modal-actions .btn{flex:1;justify-content:center;}
+  #pinError{color:var(--red-dark);font-size:13px;min-height:18px;margin-bottom:6px;}
+
+  /* ---------- Teacher view ---------- */
+  #teacherView{background:transparent;}
+  .t-card{
+    background:var(--card);border:2px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;
+  }
+  .t-card h2{font-size:17px;color:var(--blue-dark);margin:0 0 4px;display:flex;align-items:center;gap:8px;}
+  .t-card .sub{font-size:12.5px;color:#8a7a5c;margin:0 0 14px;}
+  .t-field{margin-bottom:12px;}
+  .t-field label{display:block;font-size:13px;font-weight:600;color:#5a4c33;margin-bottom:5px;}
+  .t-field input, .t-field textarea{
+    width:100%;padding:10px 12px;border-radius:10px;border:2px solid var(--border);
+    font-family:'Lexend',sans-serif;font-size:14.5px;
+  }
+  .t-field textarea{white-space:pre-wrap;min-height:120px;resize:vertical;line-height:1.6;}
+  .t-field input:focus-visible, .t-field textarea:focus-visible{outline:3px solid var(--blue);border-color:var(--blue);}
+  .t-field input[type="file"]{padding:8px;background:#fbfffd;border-style:dashed;border-color:#bfe8d3;}
+  .t-field input[type="file"]::file-selector-button{border:0;border-radius:8px;background:#e4f7ed;color:#1f7e56;padding:7px 10px;font-family:inherit;font-weight:700;cursor:pointer;margin-right:8px;}
+
+  .t-row{display:flex;gap:10px;flex-wrap:wrap;}
+  .t-row .t-field{flex:1;min-width:140px;}
+  details.help{margin-top:10px;}
+  details.help summary{cursor:pointer;font-size:13px;color:var(--blue-dark);font-weight:600;}
+  details.help pre{
+    background:#0f1720;color:#c9e9ff;padding:12px;border-radius:10px;font-size:11.5px;
+    overflow-x:auto;max-height:260px;white-space:pre;
+  }
+  details.help ol{font-size:13px;color:#5a4c33;padding-left:20px;}
+  .search-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+  .search-row input{flex:1;min-width:180px;padding:9px 12px;border-radius:10px;border:2px solid var(--border);}
+  .report-filter{flex:1;min-width:150px;padding:9px 10px;border-radius:10px;border:2px solid var(--border);background:#fff;font-family:inherit;font-size:13px;color:#5a4c33;}
+  .mic-help{display:none;max-width:560px;margin:10px auto 0;padding:12px 14px;border-radius:14px;background:#FFF7D9;border:2px solid #F4DE9B;color:#5a4c33;font-size:13px;line-height:1.5;text-align:left;}
+  .mic-help.show{display:block;}
+  .mic-help strong{display:block;color:var(--red-dark);margin-bottom:4px;}
+  .mic-help button{margin-top:8px;border:0;border-radius:999px;background:var(--blue);color:#fff;padding:8px 13px;font-family:inherit;font-weight:700;cursor:pointer;}
+  .quiz-card{margin-top:16px;padding:18px;border-radius:18px;background:#FFFDF6;border:2px solid #F1E4C5;box-shadow:0 8px 18px rgba(122,95,45,.06);}
+  .quiz-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px;}
+  .quiz-head h2{margin:0;color:#8a5a22;font-size:18px;}
+  .quiz-head p{margin:4px 0 0;color:#806f55;font-size:13px;}
+  .quiz-question{padding:12px 0;border-top:1px solid #F1E4C5;}
+  .quiz-question:first-child{border-top:0;}
+  .quiz-question legend{font-weight:700;color:#4c402d;line-height:1.45;margin-bottom:8px;}
+  .quiz-options{display:grid;gap:7px;}
+  .quiz-option{display:flex;gap:8px;align-items:flex-start;padding:9px 10px;border-radius:10px;background:#fff;border:1px solid #eadfc9;cursor:pointer;font-size:14px;line-height:1.35;}
+  .quiz-option:hover{background:#fff8e7;border-color:#e5c87e;}
+  .quiz-option input{margin-top:3px;accent-color:#d88936;}
+  .quiz-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px;}
+  .quiz-result{font-size:13px;font-weight:700;color:var(--green);}
+  .quiz-result.err{color:var(--red-dark);}
+  .voice-note{margin-top:6px;font-size:12px;color:#806f55;line-height:1.45;}
+  .quiz-editor-question{margin:12px 0;padding:10px;border:1px solid #F1DEB0;border-radius:10px;background:#fff;}
+  .quiz-editor-question label{display:block;font-size:12px;font-weight:700;color:#806f55;margin:7px 0 4px;}
+  .quiz-editor-question input[type=text]{width:100%;box-sizing:border-box;padding:8px;border:1px solid #e4d5b8;border-radius:8px;font-family:inherit;font-size:13px;}
+  .quiz-editor-answer{display:flex;gap:6px;align-items:center;margin-top:6px;font-size:12px;color:#806f55;}
+  table.report{width:100%;border-collapse:collapse;font-size:13.5px;}
+  table.report th{
+    text-align:left;background:#F3ECDA;padding:8px;font-size:12px;color:#5a4c33;position:sticky;top:0;
+  }
+  table.report td{padding:8px;border-bottom:1px solid var(--border);vertical-align:top;}
+  table.report tr:hover td{background:#FFFBF2;}
+  .table-wrap{overflow-x:auto;max-width:100%;}
+  .pct-pill{
+    display:inline-block;padding:3px 9px;border-radius:999px;font-weight:700;font-size:12.5px;
+  }
+  .pct-high{background:var(--green-bg);color:var(--green);}
+  .pct-mid{background:#FFF3D6;color:#9a6b00;}
+  .pct-low{background:var(--wrong-bg);color:var(--red-dark);}
+  .mini-audio{margin-top:4px;}
+  .wrong-list{font-size:12px;color:var(--red-dark);}
+  .empty-note{font-size:13px;color:#8a7a5c;text-align:center;padding:20px 0;}
+  .status-line{font-size:12.5px;color:#8a7a5c;margin-bottom:8px;}
+  .status-line.err{color:var(--red-dark);}
+  .status-line.ok{color:var(--green);}
+  body.shared-mode #lockBtn{display:none;}
+  .share-box{margin-top:14px;padding:14px;border-radius:14px;background:#EAF5FA;border:2px solid #cfe9f2;}
+  .share-box label{display:block;font-size:13px;font-weight:700;color:var(--blue-dark);margin-bottom:6px;}
+  .share-row{display:flex;gap:8px;align-items:stretch;}
+  .share-row input{flex:1;min-width:0;padding:10px;border:2px solid #cfe9f2;border-radius:10px;background:#fff;font-size:13px;}
+  .share-row .btn{padding:10px 13px;white-space:nowrap;}
+  @media(max-width:520px){.share-row{flex-direction:column}.share-row .btn{justify-content:center}}
+  .top-three{background:#edf8f5;border:2px solid #b9dfd4;border-radius:18px;padding:18px;margin-top:18px;}
+  .top-three h2{color:#226c65;font-size:18px;margin:0;}
+  .top-three #topThreeStatus{font-size:13px;color:#41635e;}
+  #topThreeList{padding:0;list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;}
+  .top-card{background:white;border:1px solid #d6eae4;border-radius:14px;padding:14px 10px;display:flex;align-items:center;flex-direction:column;gap:8px;text-align:center;overflow-wrap:anywhere;font-size:12px;}
+  .top-card:first-child{background:#fff7d8;border-color:#e5c26a;}
+  .top-rank{font-size:12px;font-weight:700;color:#836323;}.top-score{font-size:25px;font-weight:800;color:#206b60;}.top-score small{font-size:13px;font-weight:400;}
+  .quiz-editor-toolbar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:10px 0;}
+  .quiz-editor-question select{width:100%;padding:10px;font:inherit;border:1px solid #e4d5b8;border-radius:8px;background:white;}
+  .quiz-editor-question .quiz-editor-answer{display:flex;gap:8px;align-items:center;}.quiz-editor-answer input[data-option]{min-width:0;flex:1;}.quiz-editor-answer label{white-space:nowrap;}
+  .quiz-fill{max-width:100%;min-width:0;flex:1;padding:8px;border:1px solid #e4d5b8;border-radius:8px;font:inherit;}
+  .quiz-answer-status{font-size:13px;margin-top:8px;}.quiz-answer-status.ok{color:#267b55;}.quiz-answer-status.err{color:#ac463d;}
+  @media(max-width:400px){#topThreeList{grid-template-columns:1fr;}.top-card{display:grid;grid-template-columns:auto 1fr auto;}.top-card>span:last-child{grid-column:2/4;}.quiz-editor-toolbar{flex-wrap:wrap;}}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-badge">📖</div>
+      <div class="brand-text">
+        <h1>Trợ lý giao bài luyện đọc</h1>
+        <span>Giáo viên giao bài — AI tạo bài tập đọc hiểu</span>
+      </div>
+    </div>
+    <button id="lockBtn" title="Khu vực Giáo viên" aria-label="Khu vực Giáo viên">🔒</button>
+  </div>
+
+  <!-- ============ STUDENT VIEW ============ -->
+  <div id="studentView">
+
+    <div class="student-info">
+      <div class="field">
+        <label for="stuName">Họ và tên</label>
+        <input id="stuName" type="text" placeholder="Nguyễn Văn A" autocomplete="off">
+      </div>
+      <div class="field" style="max-width:110px;">
+        <label for="stuClass">Lớp</label>
+        <input id="stuClass" type="text" placeholder="2A1" autocomplete="off">
+      </div>
+    </div>
+
+    <section class="library-card" id="libraryCard" aria-labelledby="libraryTitle">
+      <div class="library-head">
+        <div><h2 id="libraryTitle">📚 Thư viện bài đọc theo tuần</h2><p>Chọn bài mẫu phù hợp với tuần học của con.</p></div>
+        <span aria-hidden="true">🌱</span>
+      </div>
+      <div class="library-controls">
+        <select id="libraryWeekSelect" aria-label="Chọn tuần học"></select>
+        <select id="libraryThemeSelect" aria-label="Lọc theo chủ điểm"><option value="all">Tất cả chủ điểm</option></select>
+      </div>
+      <div class="library-grid" id="libraryGrid"></div>
+      <div class="library-note">Bài đọc mẫu trong thư viện là nội dung tự biên soạn để luyện đọc, không thay thế văn bản trong sách giáo khoa. Cô có thể tạo link riêng cho bất kỳ bài nào.</div>
+    </section>
+
+    <div class="reading-card">
+      <h2 id="titleText">Đang tải bài đọc...</h2>
+      <div id="contentText"></div>
+      <span id="authorText"></span>
+      <button id="sampleBtn" class="sample-btn">🔊 Nghe phát âm mẫu</button>
+      <p class="voice-note" id="voiceStatus" role="status"></p>
+    </div>
+
+    <section class="quiz-card" id="quizPanel" aria-labelledby="quizTitle">
+      <div class="quiz-head">
+        <div>
+          <h2 id="quizTitle">🧠 Bài tập đọc hiểu do AI tạo</h2>
+          <p>Câu hỏi được tạo tự động từ chính bài đọc cô giao.</p>
+        </div>
+        <span aria-hidden="true">🌼</span>
+      </div>
+      <div id="quizQuestions"></div>
+      <div class="quiz-actions">
+        <button class="btn btn-primary" id="checkQuizBtn" type="button">✅ Kiểm tra bài</button>
+        <span class="quiz-result" id="quizResult" aria-live="polite"></span>
+      </div>
+    </section>
+
+    <section class="top-three" aria-labelledby="topThreeTitle">
+      <div class="quiz-head"><div><h2 id="topThreeTitle">Top 3 bạn đọc tốt</h2><p>Cùng cố gắng mỗi ngày!</p></div><button type="button" id="refreshTopThree" class="btn btn-secondary">Tải lại</button></div>
+      <p id="topThreeStatus" role="status"></p><ol id="topThreeList"></ol>
+      <p class="voice-note">Theo lớp đã nhập và bài đang mở. Điểm đọc = độ chính xác ÷ 10; lấy lần nộp tốt nhất của mỗi bạn. Đồng điểm cùng hạng, sắp theo tên khi chọn 3 bạn. Điểm đọc hiểu là luyện tập riêng, không cộng vào Top 3.</p>
+    </section>
+    <div class="mic-zone">
+      <button id="micBtn" aria-label="Bắt đầu đọc bài">🎤</button>
+      <div id="micLabel">BẤM ĐỂ BẮT ĐẦU ĐỌC BÀI</div>
+      <div id="micHint">Đọc rõ ràng, từ Tựa bài đến hết Tên tác giả nhé!</div>
+      <div id="micHelp" class="mic-help" role="status" aria-live="polite">
+        <strong>Điện thoại chưa cho phép dùng microphone.</strong>
+        Hãy mở link này bằng Chrome trên Android hoặc Safari trên iPhone, chọn <b>Cho phép</b> khi trình duyệt hỏi quyền microphone, rồi bấm thử lại.
+        <br><button id="micPermissionBtn" type="button">🎙️ Cấp quyền microphone</button>
+      </div>
+    </div>
+
+    <div id="resultPanel" class="result-panel">
+      <div class="score-row">
+        <div class="score-circle" id="scoreCircle" style="--pct:0"><span id="scoreValue">0%</span></div>
+        <div class="score-meta">
+          <div>Kết quả tốt nhất: <b id="bestMeta">Chưa có</b></div>
+          <div>Số lần đã luyện đọc lại: <b id="retryCount">0</b></div>
+        </div>
+      </div>
+      <div class="teacher-feedback" id="teacherFeedback" aria-live="polite"></div>
+      <div class="achievement-box" id="achievementBox">
+        <h3>🏆 Thành tích của con</h3>
+        <div class="achievement-list" id="achievementList"></div>
+      </div>
+
+      <div class="words-panel" id="wrongPanel">
+        <h3>🔤 Từ cần luyện thêm (bấm vào từ để đọc lại)</h3>
+        <div class="chips" id="chipsWrap"></div>
+      </div>
+
+      <div class="action-row">
+        <button class="btn btn-secondary" id="retryAllBtn">🔁 Đọc lại từ đầu</button>
+        <button class="btn btn-primary" id="submitBtn" disabled>✅ Nộp bài cho Cô</button>
+        <button class="btn btn-zalo" id="zaloBtn">💬 Nộp bài qua Zalo</button>
+      </div>
+      <div class="status-line" id="submitStatus"></div>
+    </div>
+  </div>
+
+  <!-- ============ TEACHER VIEW ============ -->
+  <div id="teacherView" class="hidden">
+    <div class="t-card" style="background:#F1FAF5;border-color:#BFE8D3;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+      <div><b>👩‍🏫 Tài khoản giáo viên</b><div class="status-line" id="teacherAccountStatus">Đang kiểm tra tài khoản...</div></div>
+      <button class="btn btn-secondary" id="teacherLogoutBtn" type="button">Đăng xuất</button>
+    </div>
+    <div class="t-card">
+      <h2>🔗 Kết nối Google Sheet</h2>
+      <p class="sub">Dán đường link Google Apps Script Web App để lưu và đồng bộ kết quả học sinh.</p>
+      <div class="t-field">
+        <label for="sheetUrl">Google Web App URL</label>
+        <input id="sheetUrl" type="text" placeholder="https://script.google.com/macros/s/.../exec">
+      </div>
+      <button class="btn btn-primary" id="saveSheetBtn">💾 Lưu đường link</button>
+      <div class="status-line" id="sheetStatus"></div>
+      <details class="help">
+        <summary>Hướng dẫn tạo Google Apps Script (bấm để xem)</summary>
+        <ol>
+          <li>Mở Google Sheet mới → <b>Tiện ích mở rộng</b> → <b>Apps Script</b>.</li>
+          <li>Xoá code mẫu, dán đoạn mã bên dưới vào rồi bấm Lưu.</li>
+          <li>Bấm <b>Triển khai</b> (Deploy) → <b>Triển khai mới</b> (New deployment) → chọn loại <b>Ứng dụng web</b> (Web app).</li>
+          <li>Mục "Ai có quyền truy cập": chọn <b>Bất kỳ ai</b> (Anyone). Mục "Thực thi với tư cách": chọn <b>Tôi</b> (Me).</li>
+          <li>Bấm Triển khai, cấp quyền truy cập, rồi copy đường link Web App vừa tạo và dán vào ô phía trên.</li>
+        </ol>
+        <pre id="gasCode">function doGet(e) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var action = e.parameter.action;
+  if (action === 'list') {
+    var s = ss.getSheetByName('KetQua');
+    if (!s || s.getLastRow() &lt; 2) return out_([]);
+    var data = s.getDataRange().getValues();
+    var headers = data.shift();
+    var result = data.map(function(row){
+      var obj = {};
+      headers.forEach(function(h,i){ obj[h] = row[i]; });
+      return obj;
+    });
+    return out_(result);
+  }
+  if (action === 'getPassage') {
+    var p = ss.getSheetByName('BaiDoc');
+    if (!p || p.getLastRow() &lt; 2) return out_({});
+    var row = p.getRange(2,1,1,3).getValues()[0];
+    return out_({title:row[0], content:row[1], author:row[2]});
+  }
+  return out_({ok:true});
+}
+
+function doPost(e) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var data = JSON.parse(e.postData.contents);
+  if (data.action === 'setPassage') {
+    var p = ss.getSheetByName('BaiDoc') || ss.insertSheet('BaiDoc');
+    p.clear();
+    p.appendRow(['Tua bai','Noi dung','Tac gia']);
+    p.appendRow([data.title, data.content, data.author]);
+    return out_({ok:true});
+  }
+  if (data.action === 'submit') {
+    var s = ss.getSheetByName('KetQua') || ss.insertSheet('KetQua');
+    if (s.getLastRow() === 0) {
+      s.appendRow(['hoTen','lop','tenBai','doChinhXac','soLanDocLai','tuSai','ghiAm','thoiGianNop']);
+    }
+    s.appendRow([data.hoTen, data.lop, data.tenBai, data.doChinhXac,
+                 data.soLanDocLai, (data.tuSai||[]).join(', '), data.ghiAm, data.thoiGianNop]);
+    return out_({ok:true});
+  }
+  return out_({ok:false});
+}
+
+function out_(obj){
+  return ContentService.createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}</pre>
+      </details>
+    </div>
+
+    <div class="t-card">
+      <h2>📝 Giao bài luyện đọc</h2>
+      <p class="sub">Cô dán bài đọc vào đây. Khi bấm lưu, AI sẽ tự tạo 5 câu hỏi đọc hiểu phù hợp với nội dung để học sinh làm ngay trong cùng một link.</p>
+      <div class="t-field">
+        <label for="assignedPassageSelect">📚 Bài đã giao trước đây</label>
+        <select id="assignedPassageSelect" style="width:100%;padding:10px;border:2px solid #F1DEB0;border-radius:10px;background:#fff;font-family:inherit;font-size:14px">
+          <option value="">Đang tải danh sách bài đã giao...</option>
+        </select>
+        <div class="status-line">Chọn một bài để xem lại nội dung, chỉnh sửa và lấy lại đúng link cũ.</div>
+      </div>
+      <div class="t-field">
+        <label for="pTitle">Tựa bài</label>
+        <input id="pTitle" type="text" placeholder="Ví dụ: Khu vườn của em">
+      </div>
+      <div class="t-field">
+        <label for="pContent">Nội dung bài đọc</label>
+        <textarea id="pContent" placeholder="Dán nội dung bài đọc vào đây..."></textarea>
+      </div>
+      <div class="t-field">
+        <label for="pAuthor">Tên tác giả</label>
+        <input id="pAuthor" type="text" placeholder="Ví dụ: Theo Trần Đăng Khoa">
+      </div>
+      <div class="t-field">
+        <label for="pAudio">🎧 Audio mẫu riêng cho bài này <span style="font-weight:400;color:#8a7a5c;">(không bắt buộc)</span></label>
+        <input id="pAudio" type="file" accept="audio/*">
+        <div class="status-line" id="audioStatus">Có thể tải MP3, WAV hoặc M4A; audio sẽ được lưu để học sinh ở thiết bị khác vẫn nghe được.</div>
+      </div>
+      <button class="btn btn-teacher-add" id="savePassageBtn">🤖 Lưu bài đọc và tạo bài tập AI</button>
+      <div class="status-line" id="passageStatus"></div>
+      <div class="share-box">
+        <label for="shareUrl">🔗 Link duy nhất gửi học sinh (bài đọc + bài tập AI)</label>
+        <div class="share-row">
+          <input id="shareUrl" type="text" readonly placeholder="Bấm nút bên dưới để tạo link">
+          <button class="btn btn-primary" id="makeShareBtn">Tạo link</button>
+          <button class="btn btn-secondary" id="copyShareBtn">Copy</button>
+        </div>
+        <div class="status-line" id="shareStatus">Học sinh chỉ cần một link này để mở bài đọc và bài tập đọc hiểu tương ứng.</div>
+      </div>
+      <div class="share-box" style="background:#FFF8E7;border-color:#F1DEB0;">
+        <label for="quizEditorPassage">🧠 Chỉnh bài tập đọc hiểu</label>
+        <select id="quizEditorPassage" style="width:100%;padding:10px;border:2px solid #F1DEB0;border-radius:10px;background:#fff;font-family:inherit;font-size:13px;"></select>
+        <div id="quizEditorFields"></div>
+        <div class="quiz-editor-toolbar"><button id="addQuizBtn" class="btn btn-secondary" type="button">Thêm câu hỏi</button><b id="quizCount"></b></div>
+        <button id="resetQuizTemplateBtn" class="btn btn-secondary" type="button">Nạp 5 câu mẫu của bài</button>
+        <button class="btn btn-primary" id="saveQuizBtn" type="button">💾 Lưu câu hỏi và đáp án</button>
+        <div class="status-line" id="quizEditorStatus">Cô có thể xem hoặc chỉnh câu hỏi. Sau khi chỉnh, bấm “Tạo link” ở ô phía trên để cập nhật cùng một link cho học sinh.</div>
+      </div>
+    </div>
+
+    <div class="t-card">
+      <h2>👩‍🏫 Bảng quản lý lớp học</h2>
+      <p class="sub">Danh sách kết quả học sinh của <b id="currentReportPassage">bài đang mở</b>. Kết quả được lọc riêng theo bài, không trộn với bài khác.</p>
+      <div class="search-row">
+        <input id="searchStu" type="text" placeholder="Tìm theo tên học sinh...">
+        <select id="filterClass" class="report-filter" aria-label="Lọc theo lớp"><option value="all">Tất cả các lớp</option></select>
+        <select id="filterPassage" class="report-filter" aria-label="Lọc theo bài đọc"><option value="all">Tất cả bài đọc</option></select>
+        <button class="btn btn-secondary" id="refreshBtn">🔄 Tải lại</button>
+      </div>
+      <div class="status-line" id="listStatus"></div>
+      <div class="table-wrap">
+        <table class="report" id="reportTable">
+          <thead>
+            <tr>
+              <th>Họ tên</th><th>Lớp</th><th>Bài đọc</th><th>Tốt nhất</th><th>Lượt đọc lại</th><th>Từ đọc sai</th><th>Ghi âm</th><th>Nộp lúc</th><th>Chi tiết</th>
+            </tr>
+          </thead>
+          <tbody id="reportBody"></tbody>
+        </table>
+      </div>
+      <div class="empty-note hidden" id="emptyNote">Chưa có dữ liệu học sinh nào.</div>
+      <div class="share-box hidden" id="studentDetailPanel" style="background:#F4FAFF;border-color:#CFE9F2;"></div>
+    </div>
+
+    <div class="t-card">
+      <h2>🎙️ Tùy chỉnh cô giáo AI</h2>
+      <p class="sub">Nhận xét mẫu tiếng Việt đã được tích hợp, phát được ngay cả khi điện thoại chưa cài giọng Việt. Lời riêng dùng giọng thiết bị nếu có.</p><button id="voicePreviewBtn" class="btn btn-secondary" type="button">Nghe thử giọng tích hợp</button>
+      <div class="t-field">
+        <label for="praiseText">Lời nhận xét/khen ngợi</label>
+        <textarea id="praiseText" placeholder="Con đọc rất tốt! Cô khen con..." style="min-height:90px"></textarea>
+      </div>
+      <div class="t-field">
+        <label for="voiceSelect">Giọng thiết bị cho lời riêng / bài tự soạn chưa có audio</label>
+        <select id="voiceSelect" style="width:100%;padding:10px;border-radius:10px;border:2px solid var(--border);font-family:inherit;font-size:14px"><option value="auto">Tự chọn giọng tiếng Việt</option></select>
+        <div class="voice-note">Bài mẫu và nhận xét mặc định ưu tiên audio tiếng Việt tích hợp, không phụ thuộc mục này. Nội dung cô tự soạn có thể tải audio riêng; danh sách giọng thiết bị chỉ hỗ trợ khi có giọng tiếng Việt.</div>
+      </div>
+      <button class="btn btn-primary" id="saveTeacherSettingsBtn">💾 Lưu cài đặt cô giáo</button>
+      <div class="status-line" id="teacherSettingsStatus"></div>
+    </div>
+
+    <div class="t-card">
+      <h2>🔐 Đổi mã PIN</h2>
+      <div class="t-row">
+        <div class="t-field">
+          <label for="newPin">Mã PIN mới (4 số)</label>
+          <input id="newPin" type="text" maxlength="4" placeholder="1234">
+        </div>
+      </div>
+      <button class="btn btn-secondary" id="savePinBtn">Lưu mã PIN</button>
+      <div class="status-line" id="pinStatus"></div>
+    </div>
+
+    <button class="btn btn-secondary" id="closeTeacherBtn">⬅ Quay lại màn hình học sinh</button>
+  </div>
+
+</div>
+
+<!-- PIN modal -->
+<div id="pinModalOverlay" class="modal-overlay hidden">
+  <div class="modal-box">
+    <h2>🔒 Khu vực Giáo viên</h2>
+    <p>Nhập mã PIN để mở bảng quản lý lớp học</p>
+    <div id="pinError"></div>
+    <input id="pinInput" type="password" inputmode="numeric" maxlength="4" placeholder="••••">
+    <div class="modal-actions">
+      <button class="btn btn-secondary" id="pinCancelBtn">Huỷ</button>
+      <button class="btn btn-primary" id="pinOkBtn">Mở khoá</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div id="celebrationLayer" aria-hidden="true"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============================================================
+   STATE
+   ============================================================ */
+var READING_LIBRARY = [
+{week:1,theme:'Em lớn lên từng ngày',unit:'Tập 1',lessons:'Bài 1: Tôi là học sinh lớp 2; Bài 2: Ngày hôm qua đâu rồi?',title:'Buổi sáng ở lớp mới',content:'Sáng thứ hai, Minh thức dậy thật sớm. Em tự xếp sách vở vào cặp rồi kiểm tra lại hộp bút. Ngoài hiên, nắng vàng rơi nhẹ trên những chậu hoa. Mẹ hỏi: “Con đã sẵn sàng chưa?” Minh mỉm cười: “Con sẵn sàng rồi ạ!” Đến cổng trường, em gặp Lan và Tuấn. Ba bạn vui vẻ chào nhau, rồi cùng bước vào sân. Trong lớp, cô giáo đón từng học sinh bằng ánh mắt dịu dàng. Minh ngồi ngay ngắn, mở vở và viết ngày tháng. Em thấy lớp học thật thân quen. Hôm ấy, Minh hiểu rằng mỗi ngày đến trường là một ngày em học thêm điều mới và lớn lên thêm một chút.',author:'Bài đọc mẫu tự biên soạn'},
+{week:2,theme:'Em lớn lên từng ngày',unit:'Tập 1',lessons:'Bài 3: Niềm vui của Bi và Bống; Bài 4: Làm việc thật là vui',title:'Chiếc khăn bàn của mẹ',content:'Chiều thứ sáu, mẹ chuẩn bị bữa cơm. Thấy chiếc khăn bàn đã có vài vết bẩn, An xin được giặt giúp mẹ. Em mang khăn ra chậu, vò nhẹ rồi xả thật sạch. Sau đó, An phơi khăn dưới nắng và cẩn thận gấp lại. Khi mẹ bày bát đũa, chiếc khăn trắng đã nằm ngay ngắn trên bàn. Mẹ mỉm cười: “Cảm ơn con!”. An thấy lòng mình ấm áp. Em hiểu rằng một việc nhỏ cũng có thể đem đến niềm vui cho cả nhà. Từ hôm ấy, An luôn quan sát và tìm cách giúp mẹ những việc vừa sức.',author:'Bài đọc mẫu tự biên soạn'},
+{week:3,theme:'Em lớn lên từng ngày',unit:'Tập 1',lessons:'Bài 5: Em có xinh không?; Bài 6: Một giờ học',title:'Chiếc hộp bút biết giúp đỡ',content:'Sáng thứ hai, Minh mở cặp và thấy chiếc hộp bút của mình bị bung khóa. Bút chì, tẩy và thước rơi lăn dưới gầm bàn. Minh hơi cuống, vì cô giáo sắp vào lớp. Lan ngồi bên cạnh liền cúi xuống nhặt giúp bạn. Nam cũng lấy một sợi dây nhỏ, buộc tạm chiếc khóa lại. Minh mỉm cười: “Cảm ơn các bạn! Một mình tớ chắc không kịp mất.” Khi cô giáo bước vào, ba bạn đã ngồi ngay ngắn. Cô khen nhóm bạn biết quan tâm và hợp tác. Minh hiểu rằng, khi cùng nhau giúp đỡ, việc khó cũng trở nên nhẹ nhàng hơn.',author:'Bài đọc mẫu tự biên soạn'},
+{week:4,theme:'Em lớn lên từng ngày',unit:'Tập 1',lessons:'Bài 7: Cây xấu hổ; Bài 8: Cầu thủ dự bị',title:'Bạn nhỏ chăm cây',content:'Sáng thứ bảy, Minh ra ban công tưới chậu cà chua mẹ tặng. Một chiếc lá vàng rơi xuống đất. Minh hơi buồn, nhưng không bỏ cuộc. Em nhặt lá, xới nhẹ mặt đất rồi đặt chậu cây ra nơi có nắng. Mỗi ngày, Minh đều quan sát và ghi lại một điều mới. Hôm kia, giữa những chiếc lá xanh, một nụ hoa bé xíu xuất hiện. Minh reo lên: “Cây sắp lớn rồi!”. Mẹ mỉm cười, khen em biết chăm sóc và kiên nhẫn. Minh hiểu rằng, khi làm việc đều đặn, em cũng đang lớn lên từng ngày.',author:'Bài đọc mẫu tự biên soạn'},
+{week:5,theme:'Đi học vui sao',unit:'Tập 1',lessons:'Bài 9: Cô giáo lớp em; Bài 10: Thời khóa biểu',title:'Buổi sáng ở lớp em',content:'Sáng thứ hai, sân trường rộn ràng tiếng chào hỏi. Vừa bước vào lớp, Minh thấy trên bàn cô một bình hoa nhỏ. Bạn nhẹ nhàng đặt thêm bông cúc vàng rồi ngồi ngay ngắn. Cô giáo mỉm cười: “Cảm ơn Minh! Hôm nay lớp mình cùng học thật vui nhé.” Tiết đầu là Tiếng Việt. Cô đọc một câu chuyện ngắn, sau đó cho cả lớp tìm những từ chỉ hoạt động. Minh giơ tay phát biểu. Bạn còn giúp Lan mở đúng trang sách. Trống báo giờ ra chơi vang lên. Các bạn ùa ra sân, lòng ai cũng phấn khởi. Minh nghĩ: Mỗi ngày đến trường đều có một điều hay đang chờ mình khám phá.',author:'Bài đọc mẫu tự biên soạn'},
+{week:6,theme:'Đi học vui sao',unit:'Tập 1',lessons:'Bài 11: Cái trống trường em; Bài 12: Danh sách học sinh',title:'Chiếc bảng danh sách của lớp',content:'Sáng thứ Hai, cô Mai đặt một tờ giấy lớn lên bàn. Đó là danh sách các bạn tham gia chăm sóc vườn trường. Minh đọc từ trên xuống dưới, rồi dò từng hàng thật chậm. Bạn nhận ra tên mình ở số 5. Sau tên Minh là việc tưới luống hoa trước cửa lớp. Giờ ra chơi, các bạn chia thành từng nhóm. Lan xách bình nước, Nam nhổ cỏ, còn Minh dùng chiếc xẻng nhỏ vun đất quanh gốc mười giờ. Làm xong, cả nhóm đứng ngắm khu vườn xanh mát. Cô Mai mỉm cười khen: “Các em làm việc rất cẩn thận!”. Minh thấy vui, vì tên mình trong danh sách đã gắn với một việc có ích.',author:'Bài đọc mẫu tự biên soạn'},
+{week:7,theme:'Đi học vui sao',unit:'Tập 1',lessons:'Bài 13: Yêu lắm trường ơi!; Bài 14: Em học vẽ',title:'Sân trường sau cơn mưa',content:'Sáng nay, sân trường còn ướt mềm sau một trận mưa đêm. Vừa bước qua cổng, Minh nghe tiếng chim ríu rít trên cây phượng. Những vũng nước nhỏ soi bóng mây trắng, long lanh như những chiếc gương. Ở góc sân, các bạn đang nhặt lá và xếp thành một vòng tròn. Cô giáo mỉm cười, khen cả nhóm biết giữ sân trường sạch đẹp. Tiếng trống vang lên: tùng, tùng, tùng! Minh nhanh chân về lớp, lòng thấy thật vui. Em nghĩ, mỗi ngày đến trường đều có một điều mới mẻ để khám phá. Vì thế, Minh rất yêu ngôi trường của mình.',author:'Bài đọc mẫu tự biên soạn'},
+{week:8,theme:'Đi học vui sao',unit:'Tập 1',lessons:'Bài 15: Cuốn sách của em; Bài 16: Khi trang sách mở ra',title:'Chiếc thẻ thư viện',content:'Sáng thứ sáu, lớp 2A đến thư viện trường. Cô thủ thư đưa cho mỗi bạn một chiếc thẻ nhỏ. Trên thẻ có tên bạn, ngày làm thẻ và hình ngôi sao xanh. Minh chọn một quyển sách kể về các loài chim. Lan thích sách về cây cối. Hai bạn ngồi cạnh cửa sổ, đọc thật yên lặng. Thỉnh thoảng, Minh chỉ vào một bức tranh và thì thầm: “Bạn nhìn này!” Đến giờ ra về, các bạn đặt sách ngay ngắn lên bàn. Cô thủ thư mỉm cười, dặn: “Sách là người bạn tốt. Các em hãy giữ sách sạch và đọc sách mỗi ngày nhé!” Minh cất thẻ vào hộp bút, lòng thấy vui.',author:'Bài đọc mẫu tự biên soạn'},
+{week:9,theme:'Ôn tập giữa học kì 1',unit:'Tập 1',lessons:'Ôn tập giữa học kì 1: đọc, viết, nói và nghe, luyện từ và câu',title:'Chiếc hộp lời cảm ơn',content:'Chiều thứ sáu, cô giáo đặt một chiếc hộp nhỏ trên bàn. Cô nói: “Mỗi bạn hãy viết một lời cảm ơn nhé!”. Minh nghĩ mãi. Em nhớ buổi sáng, khi làm rơi hộp bút, Lan đã nhặt giúp em. Minh nắn nót viết: “Cảm ơn Lan vì bạn luôn sẵn sàng giúp đỡ mọi người!”. Đến lượt Lan, bạn mỉm cười đọc lời cảm ơn dành cho Minh. Cả lớp vỗ tay vui vẻ. Cô giáo khen các bạn biết nhận ra điều tốt đẹp quanh mình. Từ hôm ấy, chiếc hộp đầy lên mỗi ngày. Những lời nhỏ bé làm lớp học ấm áp hơn.',author:'Bài đọc mẫu tự biên soạn'},
+{week:10,theme:'Niềm vui tuổi thơ',unit:'Tập 1',lessons:'Bài 17: Gọi bạn; Bài 18: Tớ nhớ cậu',title:'Lá thư dưới gốc phượng',content:'Giờ ra chơi, Minh ngồi dưới gốc phượng và nhớ bạn An đang nghỉ ốm. Minh lấy một tờ giấy nhỏ, nắn nót viết: “An ơi, lớp mình nhớ bạn lắm!”. Bạn còn vẽ thêm một mặt trời vàng ở góc thư. Cả nhóm cùng kí tên rồi nhờ cô giáo mang đến nhà An. Chiều hôm sau, An gửi lại một mảnh giấy. Bạn viết rằng mình đã đỡ mệt và rất vui khi nhận được lời thăm hỏi. Đọc thư, Minh mỉm cười. Cậu hiểu rằng một lời hỏi thăm tuy giản dị nhưng có thể làm người bạn đang buồn cảm thấy ấm áp hơn. Từ đó, các bạn thường xuyên hỏi thăm và giúp đỡ nhau.',author:'Bài đọc mẫu tự biên soạn'},
+{week:11,theme:'Niềm vui tuổi thơ',unit:'Tập 1',lessons:'Bài 19: Chữ A và những người bạn; Bài 20: Nhím nâu kết bạn',title:'Chiếc hộp hạt giống',content:'Sáng thứ bảy, An mang đến lớp một chiếc hộp nhỏ. Trong hộp là những hạt đậu cô giáo tặng để cả nhóm gieo thử. Minh muốn trồng ở góc sân, còn Lan thích đặt chậu bên cửa sổ. Hai bạn tranh luận mãi, rồi An đề nghị: “Mình thử cả hai cách nhé!”. Cả nhóm chia hạt thành hai phần. Minh xúc đất, Lan tưới nước, An ghi ngày gieo vào tờ giấy. Mỗi sáng, các bạn cùng quan sát. Một tuần sau, những mầm xanh nhú lên. Minh vui sướng reo: “Nhờ cùng làm, chúng mình biết cách trồng cây rồi!”. Lan mỉm cười: “Làm việc với bạn bè thật vui!”.',author:'Bài đọc mẫu tự biên soạn'},
+{week:12,theme:'Niềm vui tuổi thơ',unit:'Tập 1',lessons:'Bài 21: Thả diều; Bài 22: Tớ là lê-gô',title:'Chiếc diều giấy của Minh',content:'Chiều thứ bảy, Minh rủ An ra bãi cỏ cuối làng. Hai bạn mang theo một chiếc diều giấy màu vàng. Minh cẩn thận buộc dây, còn An giữ khung diều thật thẳng. Khi gió thổi, Minh chạy nhanh về phía trước. Chiếc diều rung rung, rồi từ từ bay lên. An reo to: “Nó lên rồi!”. Trên nền trời xanh, cánh diều giống một chiếc lá nhỏ đang múa. Hai bạn thay nhau cầm dây, mắt nhìn theo chiếc đuôi dài phấp phới. Một lát sau, diều mắc vào ngọn cỏ. Minh và An cùng gỡ xuống, sửa lại dây, rồi lại vui vẻ chạy tiếp. Trời tối, hai bạn hẹn nhau tuần sau sẽ làm thêm một chiếc diều mới.',author:'Bài đọc mẫu tự biên soạn'},
+{week:13,theme:'Niềm vui tuổi thơ',unit:'Tập 1',lessons:'Bài 23: Rồng rắn lên mây; Bài 24: Nặn đồ chơi',title:'Chiếc chong chóng bên hiên',content:'Chiều thứ bảy, gió thổi mát rượi qua sân. Minh lấy những que tre nhỏ và tờ giấy màu để làm một chiếc chong chóng. Bạn cẩn thận gấp giấy, rồi nhờ chị buộc chiếc cánh vào que. Làm xong, Minh chạy ra hiên nhà. Chong chóng quay tít, lúc xanh, lúc đỏ, trông như một bông hoa đang múa. Bé Na đứng bên cạnh, vỗ tay reo: “Cho em chạy cùng với!” Minh đưa cho em một chiếc khác. Hai anh em chạy vòng quanh sân, tiếng cười vang dưới giàn hoa giấy. Khi gió lặng, cả hai ngồi sửa lại những cánh giấy bị nhàu. Minh hiểu rằng, đồ chơi tự làm tuy giản dị nhưng đem đến niềm vui thật lâu.',author:'Bài đọc mẫu tự biên soạn'},
+{week:14,theme:'Mái ấm gia đình',unit:'Tập 1',lessons:'Bài 25: Sự tích hoa tỉ muội; Bài 26: Em mang về yêu thương',title:'Chiếc khăn ấm của anh',content:'Chiều đông, Minh ngồi bên cửa sổ làm bài. Gió lùa qua khe cửa khiến em khẽ run. Thấy vậy, anh Hải liền lấy chiếc khăn len màu xanh, nhẹ nhàng quàng lên vai em. “Em đỡ lạnh chưa?” anh hỏi. Minh mỉm cười: “Ấm rồi ạ! Em cảm ơn anh.” Một lúc sau, Minh làm xong bài toán khó. Em chạy đến khoe anh và tặng anh một bông hoa giấy nhỏ. Hai anh em cùng cười. Ngoài sân, nắng cuối ngày dịu dàng trải vàng trên hàng cây. Minh hiểu rằng, trong gia đình, một việc làm bé nhỏ cũng có thể đem đến niềm vui thật lớn.',author:'Bài đọc mẫu tự biên soạn'},
+{week:15,theme:'Mái ấm gia đình',unit:'Tập 1',lessons:'Bài 27: Mẹ; Bài 28: Trò chơi của bố',title:'Chiếc khăn trong ngăn bàn',content:'Sáng thứ hai, trời se lạnh. Minh mở ngăn bàn và thấy một chiếc khăn len màu xanh. Bạn ngạc nhiên hỏi mẹ: “Mẹ để khăn vào đây lúc nào ạ?”. Mẹ mỉm cười: “Tối qua, mẹ sợ con quên mang theo”. Minh quàng khăn lên cổ. Trên đường đến trường, gió thổi vi vu, nhưng cổ Minh vẫn ấm áp. Bạn chợt nhớ: mỗi sáng, mẹ thường chuẩn bị sách vở, rót nước và dặn bạn đi cẩn thận. Tan học, Minh chạy về nhà, ôm mẹ thật chặt. Bạn nói: “Con cảm ơn mẹ! Tối nay, con sẽ xếp sách giúp mẹ nhé”. Mẹ xoa đầu Minh. Cả hai cùng cười vui.',author:'Bài đọc mẫu tự biên soạn'},
+{week:16,theme:'Mái ấm gia đình',unit:'Tập 1',lessons:'Bài 29: Cánh cửa nhớ bà; Bài 30: Thương ông',title:'Chiếc khăn len của bà',content:'Sáng mùa đông, bà đưa cho An một chiếc khăn len màu xanh. Bà bảo: “Cháu quàng vào nhé, gió lạnh đấy!”. An vui vẻ quàng khăn rồi giúp bà xách giỏ ra chợ. Trên đường đi, An kể chuyện lớp học, còn bà chăm chú lắng nghe. Về đến nhà, An rót cho bà cốc nước ấm. Bà mỉm cười, xoa đầu cháu và nói: “Cháu của bà lớn thật rồi!”. An ôm lấy bà. Em thấy buổi đi chợ hôm ấy thật đặc biệt, vì em vừa được bà chăm sóc, vừa có dịp chăm sóc bà. Từ đó, mỗi khi trời trở lạnh, An luôn nhớ lấy khăn cho bà trước.',author:'Bài đọc mẫu tự biên soạn'},
+{week:17,theme:'Mái ấm gia đình',unit:'Tập 1',lessons:'Bài 31: Ánh sáng của yêu thương; Bài 32: Chơi chong chóng',title:'Chiếc khăn ấm',content:'Sáng chủ nhật, trời trở lạnh. Thấy bà ngoại ngồi bên cửa sổ, đôi tay run run, Minh chạy vào phòng lấy chiếc khăn len mẹ vừa đan. Em nhẹ nhàng quàng khăn cho bà rồi rót một cốc nước ấm. Bà mỉm cười, xoa đầu Minh: “Cháu của bà thật chu đáo!”. Minh ngồi cạnh, kể cho bà nghe chuyện lớp học hôm qua. Ngoài sân, gió thổi xào xạc qua hàng cây. Trong nhà, tiếng cười của hai bà cháu vang lên thật vui. Minh nghĩ: Chỉ một việc nhỏ cũng có thể làm người thân thấy ấm áp. Em tự nhủ, mỗi ngày mình sẽ biết quan tâm và giúp đỡ mọi người trong gia đình nhiều hơn.',author:'Bài đọc mẫu tự biên soạn'},
+{week:18,theme:'Ôn tập và đánh giá cuối học kì 1',unit:'Tập 1',lessons:'Ôn tập cuối học kì 1; đánh giá đọc, viết, nói và nghe',title:'Chiếc hộp lời hay',content:'Sáng thứ hai, cô giáo đặt một chiếc hộp nhỏ trên bàn. Cô nói: “Mỗi ngày, các em hãy viết một lời tốt đẹp cho bạn mình nhé!”. Lan viết: “Minh luôn giúp đỡ mọi người.” Minh đọc mảnh giấy, rồi mỉm cười. Đến lượt mình, Minh viết lời khen dành cho Lan: “Lan rất chăm chỉ và biết lắng nghe.” Cuối tuần, chiếc hộp đầy những mảnh giấy đủ màu. Cả lớp cùng đọc. Ai cũng thấy vui, vì mỗi lời tử tế giống như một tia nắng nhỏ. Từ hôm ấy, các bạn cố gắng nói lời hay và làm việc tốt mỗi ngày.',author:'Bài đọc mẫu tự biên soạn'}
+];
+
+var READING_QUIZZES = {
+  1:[['Minh làm gì trước khi đến trường?',['Xếp sách vở và kiểm tra hộp bút','Chơi ngoài sân','Mua một chiếc cặp mới'],0],['Trong lớp, cô giáo đón học sinh như thế nào?',['Bằng ánh mắt dịu dàng','Bằng tiếng trống','Bằng một món quà'],0],['Minh hiểu điều gì?',['Mỗi ngày đến trường giúp em học thêm điều mới','Không cần chuẩn bị bài','Chỉ đến trường để chơi'],0]],
+  2:[['An giúp mẹ việc gì?',['Giặt chiếc khăn bàn','Nấu bữa cơm','Quét sân trường'],0],['Sau khi giặt, An làm gì với chiếc khăn?',['Phơi nắng rồi gấp lại','Cất vào cặp','Đem cho bạn'],0],['An hiểu điều gì?',['Việc nhỏ cũng đem niềm vui cho gia đình','Chỉ người lớn mới giúp được mẹ','Làm việc nhà rất khó'],0]],
+  3:[['Chiếc hộp bút của Minh bị làm sao?',['Bị bung khóa','Bị mất màu','Bị rách vở'],0],['Ai buộc tạm chiếc khóa?',['Nam','Lan','Cô giáo'],0],['Các bạn đã làm gì cùng nhau?',['Giúp đỡ và hợp tác','Tranh giành đồ dùng','Bỏ mặc Minh'],0]],
+  4:[['Minh chăm sóc cây cà chua như thế nào?',['Tưới nước và quan sát mỗi ngày','Đem cây đi bán','Chỉ ngắm cây một lần'],0],['Điều gì xuất hiện giữa những chiếc lá?',['Một nụ hoa bé xíu','Một quả táo','Một chiếc khăn'],0],['Bài đọc nhắc em đức tính nào?',['Kiên nhẫn và chăm chỉ','Vội vàng','Ích kỉ'],0]],
+  5:[['Minh đặt thêm gì lên bàn cô?',['Một bông cúc vàng','Một quyển truyện','Một chiếc khăn'],0],['Tiết đầu, cả lớp học môn gì?',['Tiếng Việt','Toán','Âm nhạc'],0],['Minh nghĩ mỗi ngày đến trường có gì?',['Một điều hay để khám phá','Một món quà','Một chuyến đi xa'],0]],
+  6:[['Minh có tên ở vị trí số mấy?',['Số 5','Số 2','Số 10'],0],['Minh được giao việc gì?',['Vun đất quanh gốc hoa','Xách bình nước','Nhổ cỏ'],0],['Các bạn chăm sóc vườn trường theo cách nào?',['Chia thành từng nhóm','Làm một mình','Đợi cô giáo làm'],0]],
+  7:[['Sân trường còn như thế nào sau trận mưa?',['Ướt mềm','Khô bụi','Đầy tuyết'],0],['Các bạn làm gì ở góc sân?',['Nhặt lá và xếp thành vòng tròn','Chơi đá bóng','Trồng cây'],0],['Vì sao Minh yêu ngôi trường?',['Mỗi ngày có điều mới để khám phá','Vì trường rất xa nhà','Vì được nghỉ học'],0]],
+  8:[['Lớp 2A đến đâu vào sáng thứ sáu?',['Thư viện trường','Sân vận động','Nhà bạn Minh'],0],['Trên thẻ thư viện có hình gì?',['Ngôi sao xanh','Bông hoa đỏ','Mặt trời vàng'],0],['Cô thủ thư dặn các bạn điều gì?',['Giữ sách sạch và đọc sách mỗi ngày','Mang sách về nhà bán','Không được xem tranh'],0]],
+  9:[['Cô giáo đặt vật gì trên bàn?',['Một chiếc hộp nhỏ','Một bó hoa','Một quyển vở'],0],['Minh viết lời cảm ơn dành cho ai?',['Lan','An','Cô giáo'],0],['Những lời cảm ơn làm lớp học thế nào?',['Ấm áp hơn','Ồn ào hơn','Buồn hơn'],0]],
+  10:[['Minh viết thư cho bạn nào?',['An','Lan','Tuấn'],0],['An nghỉ học vì lý do gì?',['Bị ốm','Đi du lịch','Giúp mẹ'],0],['Lời hỏi thăm có thể làm người buồn thế nào?',['Ấm áp hơn','Sợ hãi hơn','Mệt mỏi hơn'],0]],
+  11:[['Trong hộp của An có gì?',['Những hạt đậu','Những viên bi','Những chiếc lá'],0],['Cả nhóm chia hạt thành mấy phần?',['Hai phần','Ba phần','Bốn phần'],0],['Các bạn học được điều gì?',['Cùng làm việc thì sẽ vui và biết cách trồng cây','Không cần tưới nước','Chỉ Minh mới làm được'],0]],
+  12:[['Minh và An mang gì ra bãi cỏ?',['Một chiếc diều giấy màu vàng','Một quả bóng','Một chiếc chong chóng'],0],['Khi diều mắc vào ngọn cỏ, hai bạn làm gì?',['Cùng gỡ xuống và sửa lại dây','Bỏ về nhà','Tranh nhau chiếc diều'],0],['Hai bạn hẹn tuần sau làm gì?',['Làm thêm một chiếc diều mới','Đi câu cá','Đọc sách'],0]],
+  13:[['Minh làm chong chóng bằng gì?',['Que tre và giấy màu','Lá cây và dây len','Bìa sách'],0],['Bé Na muốn làm gì?',['Chạy cùng Minh','Mượn sách','Về nhà ngủ'],0],['Minh hiểu điều gì về đồ chơi tự làm?',['Đơn giản nhưng đem lại niềm vui lâu dài','Luôn phải thật đắt tiền','Không thể chơi cùng người khác'],0]],
+  14:[['Anh Hải quàng gì lên vai Minh?',['Chiếc khăn len màu xanh','Một chiếc áo mưa','Một chiếc chăn'],0],['Minh tặng anh món quà gì?',['Một bông hoa giấy','Một quyển sách','Một chiếc bánh'],0],['Bài đọc nói việc nhỏ trong gia đình có thể đem lại điều gì?',['Niềm vui thật lớn','Nỗi buồn','Sự lo lắng'],0]],
+  15:[['Minh thấy gì trong ngăn bàn?',['Một chiếc khăn len màu xanh','Một hộp bút mới','Một lá thư'],0],['Vì sao mẹ để khăn vào ngăn bàn?',['Sợ Minh quên mang theo','Muốn tặng bạn','Để cất đồ chơi'],0],['Minh hứa sẽ làm gì để giúp mẹ?',['Xếp sách','Nấu cơm','Tưới cây'],0]],
+  16:[['Bà đưa cho An vật gì?',['Một chiếc khăn len màu xanh','Một chiếc cặp','Một chiếc mũ'],0],['An giúp bà việc gì trên đường?',['Xách giỏ ra chợ','Đọc sách','Tưới hoa'],0],['Khi trời trở lạnh, An nhớ làm gì?',['Lấy khăn cho bà','Đóng cửa lớp','Mua đồ chơi'],0]],
+  17:[['Minh quàng khăn cho ai?',['Bà ngoại','Mẹ','Bạn An'],0],['Minh rót gì cho bà?',['Một cốc nước ấm','Một cốc nước đá','Một bát canh'],0],['Minh tự nhủ sẽ làm gì mỗi ngày?',['Quan tâm và giúp đỡ mọi người','Chơi một mình','Không ra ngoài'],0]],
+  18:[['Cô giáo muốn các bạn viết điều gì?',['Một lời tốt đẹp cho bạn','Một bài toán','Một lá thư cho người thân'],0],['Lan được khen là người thế nào?',['Chăm chỉ và biết lắng nghe','Hay quên và vội vàng','Ít nói và buồn bã'],0],['Mỗi lời tử tế được ví như gì?',['Một tia nắng nhỏ','Một cơn mưa','Một chiếc lá khô'],0]]
+};
+var QUIZ_ADDITIONS = {
+  1:['Minh tự xếp sách vở vào cặp trước khi đến trường.',true,'Minh gặp Lan và ___ ở cổng trường.','Tuấn'],
+  2:['An cất chiếc khăn còn ướt ngay vào tủ.',false,'Sau khi giặt sạch, An phơi khăn dưới ___.','nắng'],
+  3:['Lan cúi xuống nhặt đồ dùng giúp Minh.',true,'Bạn ___ dùng sợi dây buộc tạm chiếc khóa hộp bút.','Nam'],
+  4:['Thấy lá vàng rụng, Minh bỏ mặc chậu cây.',false,'Mẹ tặng Minh một chậu cây ___.','cà chua'],
+  5:['Tiết học đầu tiên của lớp là Tiếng Việt.',true,'Minh đặt thêm một bông ___ vàng lên bàn cô.','cúc'],
+  6:['Các bạn chia thành từng nhóm để chăm sóc vườn trường.',true,'Lan xách bình nước, còn Nam nhổ ___.','cỏ'],
+  7:['Sân trường sau trận mưa đêm khô và đầy bụi.',false,'Những vũng nước nhỏ soi bóng mây ___.','trắng'],
+  8:['Cô thủ thư dặn học sinh giữ sách sạch.',true,'Lớp 2A đến thư viện vào sáng thứ ___.','sáu|6'],
+  9:['Minh viết lời cảm ơn vì Lan đã nhặt hộp bút giúp mình.',true,'Những lời cảm ơn làm lớp học ___ hơn.','ấm áp'],
+  10:['An nghỉ học vì đi du lịch.',false,'Minh vẽ một mặt trời màu ___ ở góc thư.','vàng'],
+  11:['Các bạn chia hạt giống để thử cả hai cách trồng.',true,'Trong hộp của An có những hạt ___.','đậu'],
+  12:['Khi diều mắc vào ngọn cỏ, hai bạn bỏ về ngay.',false,'Chiếc diều giấy của hai bạn có màu ___.','vàng'],
+  13:['Minh đưa cho bé Na một chiếc chong chóng để cùng chơi.',true,'Chong chóng được làm từ que tre và giấy ___.','màu'],
+  14:['Anh Hải quàng khăn cho Minh khi thấy em lạnh.',true,'Minh tặng anh một bông hoa làm bằng ___.','giấy'],
+  15:['Mẹ chuẩn bị khăn vì sợ Minh quên mang theo.',true,'Minh tìm thấy chiếc khăn trong ngăn ___.','bàn'],
+  16:['An chỉ nhận sự chăm sóc mà không giúp bà.',false,'Về đến nhà, An rót cho bà một cốc nước ___.','ấm'],
+  17:['Minh quàng khăn và rót nước ấm cho bà ngoại.',true,'Minh lấy chiếc khăn ___ mẹ vừa đan để quàng cho bà.','len'],
+  18:['Cô giáo khuyến khích học sinh nói lời tử tế.',true,'Mỗi lời tử tế được ví như một tia ___ nhỏ.','nắng']
+};
+Object.keys(READING_QUIZZES).forEach(function(week){
+  var extra=QUIZ_ADDITIONS[week];
+  READING_QUIZZES[week]=READING_QUIZZES[week].map(function(item,index){
+    var options=item[1].slice(), offset=(Number(week)+index)%options.length;
+    var rotated=options.slice(offset).concat(options.slice(0,offset));
+    return {type:'single',prompt:item[0],options:rotated,answers:[(item[2]-offset+options.length)%options.length]};
+  }).concat([{type:'boolean',prompt:extra[0],options:['Đúng','Sai'],answers:[extra[1]?0:1]},{type:'fill',prompt:extra[2],answers:extra[3].split('|')}]);
+});
+READING_QUIZZES[6][1].prompt='Trong giờ ra chơi, Minh làm việc gì ở vườn trường?';
+var DEFAULT_PASSAGE = {
+  title: "Chưa có bài được giao",
+  content: "Cô giáo chưa giao bài đọc nào. Khi cô gửi link bài đọc, nội dung bài sẽ hiện ở đây.",
+  author: ""
+};
+
+var state = {
+  passage: null,
+  allWords: [],           // {idx, raw, norm}
+  attempts: [],           // {matched:Set, correctedIdx:Set, percent, wrongWords:[{idx,raw}], audioBase64}
+  currentAttemptIndex: -1,
+  isReading: false,
+  finalTranscript: "",
+  interimTranscript: "",
+  recognition: null,
+  mediaRecorder: null,
+  audioChunks: [],
+  audioStream: null,
+  sampleVoice: null,
+  isSpeaking: false,
+  sharedPassage: null,
+  sharedPassageId: null,
+  correctedIdx: new Set(),
+  teacherSettings: {praise:'', voiceName:'auto'},
+  quizAnswers: [],
+  aiFeedback: '',
+  feedbackRequestId: 0,
+	  achievements: [],
+	  savingResult: false,
+	  retryBusy: false,
+  finalizeTimer: null,
+  recognitionRestartTimer: null,
+  recognitionRunId: 0,
+  lastRecognitionError: '',
+  processedTranscriptWords: 0,
+  readingStartedAt: 0,
+  readingWpm: 0,
+  liveFrontier: 0,
+  liveActiveIndex: -1,
+  feedbackAudioUrl: '',
+  feedbackAudioText: '',
+  feedbackAudioStartedFor: 0
+};
+
+var $ = function(id){ return document.getElementById(id); };
+
+function loadTeacherSettings(){
+  try { state.teacherSettings = Object.assign(state.teacherSettings, JSON.parse(localStorage.getItem('teacher_settings') || '{}')); } catch(ignore){}
+}
+function saveTeacherSettings(){ localStorage.setItem('teacher_settings', JSON.stringify(state.teacherSettings)); }
+var quizDraft=[], quizEditorDirty=false, quizEditorSelection='current';
+function getQuizEditorPassage(){
+  var select=$('quizEditorPassage');
+  if (select.value!=='current'){
+    var item=READING_LIBRARY.find(function(entry){return String(entry.week)===select.value;});
+    if(item)return {title:item.title,content:item.content,author:item.author,libraryWeek:item.week,shareId:'library-week-'+item.week,audioUrl:FIXED_SAMPLE_AUDIO[item.week]};
+  }
+  return passageFromTeacherForm();
+}
+function readQuizDraft(){
+  return Array.from($('quizEditorFields').querySelectorAll('.quiz-editor-question')).map(function(el){
+    var type=el.dataset.type;
+    return {type:type,prompt:el.querySelector('[data-prompt]').value.trim(),options:type==='fill'?[]:Array.from(el.querySelectorAll('[data-option]')).map(function(e){return e.value.trim();}),answers:type==='fill'?el.querySelector('[data-fill]').value.split('|').map(function(a){return a.trim();}).filter(Boolean):Array.from(el.querySelectorAll('[data-correct]:checked')).map(function(e){return Number(e.value);})};
+  });
+}
+function drawQuizEditor(){
+  var fields=$('quizEditorFields');
+  fields.innerHTML=quizDraft.map(function(q,i){
+    var types=['single','multi','boolean','fill'].map(function(type){return '<option value="'+type+'" '+(q.type===type?'selected':'')+'>'+quizTypeLabel(type)+'</option>';}).join('');
+    var body=q.type==='fill'?'<label>Đáp án chấp nhận (ngăn cách bằng dấu |)<input data-fill type="text" value="'+escapeHtml(q.answers.join(' | '))+'" maxlength="800"></label><p class="voice-note">Không phân biệt hoa/thường, giữ dấu tiếng Việt.</p>':q.options.map(function(option,oi){return '<div class="quiz-editor-answer"><label><input data-correct type="'+(q.type==='multi'?'checkbox':'radio')+'" name="editor-answer-'+i+'" value="'+oi+'" '+(q.answers.indexOf(oi)>=0?'checked':'')+'> Đúng</label><input data-option type="text" maxlength="400" aria-label="Phương án '+(oi+1)+' câu '+(i+1)+'" value="'+escapeHtml(option)+'" '+(q.type==='boolean'?'readonly':'')+'></div>';}).join('');
+    return '<div class="quiz-editor-question" data-type="'+q.type+'" data-index="'+i+'"><div class="quiz-editor-toolbar"><b>Câu '+(i+1)+'</b><button type="button" data-remove="'+i+'" class="btn btn-secondary">Xóa câu</button></div><label>Dạng câu hỏi<select data-type>'+types+'</select></label><label>Nội dung câu hỏi<input data-prompt type="text" maxlength="800" value="'+escapeHtml(q.prompt)+'"></label>'+body+'</div>';
+  }).join('');
+  $('quizCount').textContent=quizDraft.length+'/20 câu';
+  $('addQuizBtn').disabled=quizDraft.length>=20;
+  fields.querySelectorAll('select[data-type]').forEach(function(select){select.addEventListener('change',function(){
+    var index=Number(select.closest('[data-index]').dataset.index), oldType=quizDraft[index].type;
+    quizDraft=readQuizDraft(); var q=quizDraft[index];q.type=select.value;
+    if(q.type!==oldType){q.answers=[];q.options=q.type==='boolean'?['Đúng','Sai']:(q.type==='fill'?[]:['','','','']);}
+    quizEditorDirty=true;drawQuizEditor();
+  });});
+  fields.querySelectorAll('[data-remove]').forEach(function(button){button.onclick=function(){quizDraft=readQuizDraft();quizDraft.splice(Number(button.dataset.remove),1);quizEditorDirty=true;drawQuizEditor();};});
+  fields.oninput=function(){quizEditorDirty=true;$('quizEditorStatus').textContent='Có thay đổi chưa lưu.';};
+}
+function renderQuizEditor(){
+  quizDraft=getReadingQuiz(getQuizEditorPassage());quizEditorDirty=false;drawQuizEditor();
+  $('quizEditorStatus').textContent='Sửa 1–20 câu. Chọn đáp án đúng cho từng câu; lưu rồi tạo link mới để gửi học sinh.';
+}
+function initQuizEditor(){
+  var select=$('quizEditorPassage');
+  select.innerHTML='<option value="current">Bài đang mở / nội dung cô đang soạn</option>'+READING_LIBRARY.map(function(item){return '<option value="'+item.week+'">Tuần '+item.week+' — '+escapeHtml(item.title)+'</option>';}).join('');
+  select.value=state.passage && state.passage.libraryWeek ? String(state.passage.libraryWeek):'current';
+  quizEditorSelection=select.value;
+  select.onchange=function(){if(quizEditorDirty && !confirm('Cô có thay đổi chưa lưu. Chuyển bài và bỏ những thay đổi này?')){select.value=quizEditorSelection;return;}quizEditorSelection=select.value;renderQuizEditor();};
+  renderQuizEditor();
+}
+function saveQuizEditor(){
+  var passage=getQuizEditorPassage(), status=$('quizEditorStatus');
+  quizDraft=readQuizDraft();var quiz=normalizeQuiz(quizDraft);
+  if(!passage.title.trim() || !passage.content.trim()){status.textContent='Cô hãy nhập tựa bài và nội dung trước khi lưu câu hỏi.';status.className='status-line err';return false;}
+  if(!quiz || !quiz.length){status.textContent='Cần 1–20 câu hoàn chỉnh, đủ phương án và đáp án đúng. Câu chọn nhiều cần ít nhất một đáp án; câu điền từ cần đáp án mẫu.';status.className='status-line err';return false;}
+  try{localStorage.setItem(getQuizStorageKey(passage),JSON.stringify(quiz));}catch(e){status.textContent='Không lưu được trên máy này. Cô kiểm tra dung lượng/lưu trữ của trình duyệt nhé.';status.className='status-line err';return false;}
+  if(state.passage && getQuizStorageKey(state.passage)===getQuizStorageKey(passage)){state.passage.quiz=quiz;saveLocalPassage(state.passage);renderReadingQuiz(state.passage);}
+  quizEditorDirty=false;
+  $('shareUrl').value='';
+  status.textContent='Đã lưu '+quiz.length+' câu cho “'+passage.title+'”. Bấm “Tạo link” ở ô phía trên để cập nhật bài đọc và bài tập trong cùng một link.';
+  status.className='status-line ok';return true;
+}
+$('addQuizBtn').addEventListener('click',function(){quizDraft=readQuizDraft();if(quizDraft.length>=20)return;quizDraft.push({type:'single',prompt:'',options:['','','',''],answers:[]});quizEditorDirty=true;drawQuizEditor();});
+$('resetQuizTemplateBtn').addEventListener('click',function(){
+  var p=getQuizEditorPassage(), week=p.libraryWeek || p.week;
+  var base=week?READING_QUIZZES[week]:null;
+  if(!base){toast('Bài tự soạn chưa có câu mẫu. Cô dùng nút Thêm câu hỏi nhé.');return;}
+  if(quizEditorDirty && !confirm('Nạp mẫu sẽ thay bản nháp chưa lưu. Cô có muốn tiếp tục?'))return;
+  quizDraft=normalizeQuiz(base);quizEditorDirty=true;drawQuizEditor();
+  $('quizEditorStatus').textContent='Đã nạp 5 câu mẫu vào bản nháp. Cô kiểm tra và bấm Lưu để áp dụng.';
+});
+function loadAchievements(){
+  try { state.achievements = JSON.parse(localStorage.getItem('reading_achievements') || '[]'); if (!Array.isArray(state.achievements)) state.achievements=[]; } catch(ignore){ state.achievements=[]; }
+}
+function saveAchievements(){ localStorage.setItem('reading_achievements', JSON.stringify(state.achievements.slice(-100))); }
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+var toastTimer = null;
+function toast(msg){
+  var el = $('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ el.classList.remove('show'); }, 3200);
+}
+
+/* ============================================================
+   TEXT HELPERS
+   ============================================================ */
+function escapeHtml(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function normalizeWord(tok){
+  return tok.toLowerCase().normalize('NFC')
+    .replace(/[.,!?;:"'“”‘’()\[\]{}…\-–—*_]/g,'')
+    .trim();
+}
+/* So khớp mềm cho lỗi nghe thường gặp d/gi/r, s/x, ch/tr trên tiếng Việt. */
+function speechKey(word){
+  return normalizeWord(word)
+    .replace(/^gi/,'d').replace(/^r/,'d')
+    .replace(/^x/,'s').replace(/^ch/,'tr')
+    .replace(/qu/g,'q').replace(/ngh?/g,'g')
+    .replace(/[^a-zà-ỹ]/g,'');
+}
+function wordsEquivalent(a,b){
+  return a === b || speechKey(a) === speechKey(b);
+}
+function tokenize(text, startIdx){
+  text = text || "";
+  var parts = text.split(/(\s+)/);
+  var html = "";
+  var words = [];
+  var idx = startIdx;
+  for (var i=0;i<parts.length;i++){
+    var tok = parts[i];
+    if (tok === "") continue;
+    if (/^\s+$/.test(tok)){
+      html += tok;
+    } else {
+      var norm = normalizeWord(tok);
+      if (norm === ""){
+        html += escapeHtml(tok);
+      } else {
+        html += '<span class="w" id="w-'+idx+'">' + escapeHtml(tok) + '</span>';
+        words.push({idx:idx, raw:tok, norm:norm});
+        idx++;
+      }
+    }
+  }
+  return {html:html, words:words, nextIdx:idx};
+}
+
+/* ============================================================
+   PASSAGE RENDER
+   ============================================================ */
+function renderPassage(passage){
+  stopAllSpeech();
+  state.passage = passage;
+  var t = tokenize(passage.title, 0);
+  var c = tokenize(passage.content, t.nextIdx);
+  var a = tokenize(passage.author, c.nextIdx);
+  state.allWords = t.words.concat(c.words, a.words);
+  $('titleText').innerHTML = t.html || "(Chưa có tựa bài)";
+  $('contentText').innerHTML = c.html || "(Chưa có nội dung)";
+  $('authorText').innerHTML = a.html ? ("— " + a.html) : "";
+  renderReadingQuiz(passage);
+  resetAttempts();
+  updateVoiceStatus();
+  loadLeaderboard();
+}
+
+function normalizeQuiz(raw){
+  if (!Array.isArray(raw) || raw.length>20) return null;
+  var quiz=raw.map(function(q){
+    if (Array.isArray(q)) return {type:'single',prompt:q[0],options:q[1],answers:[q[2]]};
+    return q;
+  });
+  return quiz.every(function(q){
+    if (!q || ['single','multi','boolean','fill'].indexOf(q.type)<0 || typeof q.prompt!=='string' || !q.prompt.trim() || q.prompt.length>800 || !Array.isArray(q.answers) || !q.answers.length) return false;
+    if(q.type==='boolean' && (!Array.isArray(q.options) || q.options.length!==2))return false;
+    if (q.type==='fill') return q.answers.every(function(a){return typeof a==='string' && a.trim() && a.length<=200;});
+    return Array.isArray(q.options) && q.options.length>=2 && q.options.length<=6 && q.options.every(function(o){return typeof o==='string' && o.trim() && o.length<=400;}) && (q.type==='multi' || q.answers.length===1) && new Set(q.answers).size===q.answers.length && q.answers.every(function(a){return Number.isInteger(a) && a>=0 && a<q.options.length;});
+  }) ? JSON.parse(JSON.stringify(quiz)) : null;
+}
+function getReadingQuiz(passage){
+  var embedded=normalizeQuiz(passage && passage.quiz);
+  // Shared links are snapshots. Never let another local exercise overwrite them.
+  if (passage===state.sharedPassage && embedded) return embedded;
+  try {var saved=normalizeQuiz(JSON.parse(localStorage.getItem(getQuizStorageKey(passage)) || 'null'));if(saved) return saved;} catch(ignore){}
+  if (embedded) return embedded;
+  var week=passage && (passage.libraryWeek || passage.week);
+  if (week && READING_QUIZZES[week]) return normalizeQuiz(READING_QUIZZES[week]);
+  if (passage && passage.title===DEFAULT_PASSAGE.title && passage.content===DEFAULT_PASSAGE.content) return [];
+  return normalizeQuiz(generateQuizForPassage(passage)) || [];
+}
+function getQuizStorageKey(passage){
+  if (passage && passage.shareId) return 'reading_quiz_share_'+encodeURIComponent(passage.shareId);
+  var week=passage && (passage.libraryWeek || passage.week);
+  if (week) return 'reading_quiz_week_'+week;
+  return 'reading_quiz_custom_'+encodeURIComponent(String(passage && passage.title || 'default'));
+}
+function newPassageId(){
+  var raw=(window.crypto && crypto.randomUUID)?crypto.randomUUID():Date.now().toString(36)+'-'+Math.random().toString(36).slice(2);
+  return 'p_'+raw.replace(/[^a-zA-Z0-9_-]/g,'').slice(0,56);
+}
+function generateQuizForPassage(passage){
+  if (!passage || !passage.content || passage.title==='Chưa có bài được giao') return [];
+  var sentences=passage.content.split(/[.!?]+/).map(function(x){return x.trim();}).filter(Boolean);
+  if (!sentences.length) return [];
+  var first=sentences[0], last=sentences[sentences.length-1], second=sentences[1]||first;
+  var firstWord=(first.match(/[A-Za-zÀ-ỹĐđ]+/i)||[''])[0];
+  var words=first.match(/[A-Za-zÀ-ỹĐđ]{3,}/gi)||[], keyWords=[];
+  words.forEach(function(w){if(keyWords.indexOf(w.toLocaleLowerCase('vi'))<0 && keyWords.length<2)keyWords.push(w);});
+  if(!keyWords.length)keyWords=['bài đọc'];
+  return [
+    {type:'single',prompt:'Chi tiết nào được nhắc đến trong bài đọc?',options:[first,second,'Một sự việc không xuất hiện trong bài'],answers:[0]},
+    {type:'boolean',prompt:'Bài đọc có nhắc đến chi tiết: “'+first.slice(0,90)+'”.',options:['Đúng','Sai'],answers:[0]},
+    {type:'fill',prompt:'Bài đọc mở đầu bằng từ nào?',answers:[firstWord]},
+    {type:'multi',prompt:'Những từ nào xuất hiện trong câu đầu của bài?',options:[keyWords[0],keyWords[1]||keyWords[0],'tàu vũ trụ','núi lửa'],answers:keyWords.length>1?[0,1]:[0]},
+    {type:'single',prompt:'Bài đọc kết thúc bằng chi tiết nào?',options:[last,first,'Một chi tiết không có trong bài'],answers:[0]}
+  ];
+}
+function quizTypeLabel(type){return {single:'Chọn một đáp án',multi:'Chọn tất cả đáp án đúng',boolean:'Đúng hoặc sai',fill:'Điền từ'}[type];}
+function normalizedAnswer(text){return String(text).normalize('NFC').toLocaleLowerCase('vi').trim().replace(/\s+/g,' ').replace(/[.!?]+$/,'');}
+function isQuizAnswerCorrect(q, answer){
+  if(q.type==='fill') return q.answers.some(function(a){return normalizedAnswer(a)===normalizedAnswer(answer);});
+  return Array.isArray(answer) && answer.length===q.answers.length && q.answers.every(function(a){return answer.indexOf(a)>=0;});
+}
+function renderReadingQuiz(passage){
+  var questions=$('quizQuestions'), quiz=getReadingQuiz(passage);
+  state.quizResult=null;
+  state.quizAnswers=[];
+  questions.innerHTML=quiz.length ? quiz.map(function(q,index){
+    var body=q.type==='fill' ? '<label class="quiz-option">Câu trả lời<input type="text" class="quiz-fill" name="quiz-'+index+'" maxlength="200" autocomplete="off" aria-label="Câu trả lời câu '+(index+1)+'"></label>' : '<div class="quiz-options">'+q.options.map(function(option,oi){return '<label class="quiz-option"><input type="'+(q.type==='multi'?'checkbox':'radio')+'" name="quiz-'+index+'" value="'+oi+'"><span>'+escapeHtml(option)+'</span></label>';}).join('')+'</div>';
+    return '<fieldset class="quiz-question"><legend>Câu '+(index+1)+'. '+escapeHtml(q.prompt)+'</legend><p class="voice-note">'+quizTypeLabel(q.type)+'</p>'+body+'<div class="quiz-answer-status" id="quiz-answer-'+index+'"></div></fieldset>';
+  }).join('') : '<p>Cô chưa thêm câu hỏi cho bài này. Con có thể luyện đọc trước nhé.</p>';
+  $('checkQuizBtn').disabled=!quiz.length;
+  $('quizResult').textContent='';$('quizResult').className='quiz-result';
+  questions.oninput=function(){state.quizResult=null;$('quizResult').textContent='Con bấm Kiểm tra bài để chấm câu trả lời mới nhé.';questions.querySelectorAll('.quiz-answer-status').forEach(function(el){el.textContent='';});};
+}
+function checkReadingQuiz(){
+  var quiz=getReadingQuiz(state.passage), score=0, unanswered=[], answers=[];
+  if(!quiz.length) return;
+  quiz.forEach(function(q,index){
+    var selected=q.type==='fill' ? document.querySelector('input[name="quiz-'+index+'"]').value.trim() : Array.from(document.querySelectorAll('input[name="quiz-'+index+'"]:checked')).map(function(input){return Number(input.value);});
+    answers.push(selected);
+    if(!selected.length) unanswered.push(index+1);
+  });
+  var result=$('quizResult');
+  if(unanswered.length){result.textContent='Con hãy trả lời câu '+unanswered.join(', ')+' nhé.';result.className='quiz-result err';return;}
+  quiz.forEach(function(q,index){var correct=isQuizAnswerCorrect(q,answers[index]);if(correct)score++;var hint=$('quiz-answer-'+index);hint.textContent=correct?'Đúng rồi!':'Con hãy đọc lại bài và thử lại câu này nhé.';hint.className='quiz-answer-status '+(correct?'ok':'err');});
+  state.quizAnswers=quiz.map(function(q,index){return {question:q.prompt,type:q.type,options:q.options||[],selected:answers[index],correct:q.answers,correctAnswer:q.type==='fill'?q.answers:q.answers.map(function(i){return q.options[i];})};});
+  state.quizResult={correct:score,total:quiz.length,score:Math.round(score/quiz.length*100)};
+  result.textContent='Con đúng '+score+'/'+quiz.length+' câu — '+(score/quiz.length*10).toFixed(1)+'/10 điểm. '+(score===quiz.length?'Con đọc hiểu rất tốt!':'Con thử lại những câu chưa đúng nhé.');
+  result.className='quiz-result'+(score===quiz.length?'':' err');
+}
+
+function resetWordColors(){
+  state.liveFrontier=0;state.liveActiveIndex=-1;state.readingWpm=0;
+  state.allWords.forEach(function(w){
+    var el = $('w-'+w.idx);
+    if (el) el.className = 'w';
+  });
+}
+
+/* ============================================================
+   FIXED SAMPLE AUDIO
+   ============================================================ */
+   Audio mẫu được tạo theo yêu cầu bằng FPT.AI và lưu ở URL S3 trả về. */
+var FIXED_SAMPLE_AUDIO = {};
+var fixedSampleAudio = ('Audio' in window) ? new Audio() : null;
+function getFixedAudioUrl(passage){ return passage && passage.libraryWeek ? FIXED_SAMPLE_AUDIO[passage.libraryWeek] || '' : ''; }
+function stopFixedAudio(){ if(fixedSampleAudio){fixedSampleAudio.pause();fixedSampleAudio.currentTime=0;} }
+
+/* ============================================================
+   READING LIBRARY
+   ============================================================ */
+function initReadingLibrary(){
+  var weekSelect=$('libraryWeekSelect'), themeSelect=$('libraryThemeSelect');
+  if (!weekSelect || !themeSelect) return;
+  weekSelect.innerHTML='<option value="all">Tất cả 18 tuần học</option>' + READING_LIBRARY.map(function(item){return '<option value="'+item.week+'">Tuần '+item.week+': '+escapeHtml(item.theme)+'</option>';}).join('');
+  var themes=[];
+  READING_LIBRARY.forEach(function(item){if(themes.indexOf(item.theme)<0) themes.push(item.theme);});
+  themeSelect.innerHTML='<option value="all">Tất cả chủ điểm</option>'+themes.map(function(theme){return '<option value="'+escapeHtml(theme)+'">'+escapeHtml(theme)+'</option>';}).join('');
+  weekSelect.addEventListener('change',renderReadingLibrary);
+  themeSelect.addEventListener('change',renderReadingLibrary);
+  renderReadingLibrary();
+}
+function renderReadingLibrary(){
+  var grid=$('libraryGrid'), week=$('libraryWeekSelect'), theme=$('libraryThemeSelect');
+  if (!grid || !week || !theme) return;
+  var weekValue=week.value, themeValue=theme.value;
+  var items=READING_LIBRARY.filter(function(item){return (weekValue==='all'||String(item.week)===weekValue)&&(themeValue==='all'||item.theme===themeValue);});
+  grid.innerHTML=items.map(function(item){
+    var active=state.passage && state.passage.libraryWeek===item.week ? ' active' : '';
+    return '<button type="button" class="library-item'+active+'" data-library-week="'+item.week+'"><span class="week">TUẦN '+item.week+'</span><strong>'+escapeHtml(item.title)+'</strong><small>'+escapeHtml(item.lessons)+'</small></button>';
+  }).join('');
+  Array.prototype.forEach.call(grid.querySelectorAll('[data-library-week]'),function(button){
+    button.addEventListener('click',function(){
+      var item=READING_LIBRARY.find(function(entry){return String(entry.week)===button.getAttribute('data-library-week');});
+      if (!item) return;
+      var passage={title:item.title,content:item.content,author:item.author,libraryWeek:item.week,libraryTheme:item.theme,shareId:'library-week-'+item.week,audioUrl:FIXED_SAMPLE_AUDIO[item.week]};
+      renderPassage(passage);
+      history.replaceState(null,'',window.location.pathname+'?thu='+item.week);
+      renderReadingLibrary();
+      toast('Đã chọn bài mẫu Tuần '+item.week+'. Con bấm “Nghe phát âm mẫu” để nghe cô đọc nhé!');
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+  });
+}
+function loadLibraryPassageFromUrl(){
+  var week=new URLSearchParams(window.location.search).get('thu');
+  if (!week) return null;
+  return READING_LIBRARY.find(function(item){return String(item.week)===week;}) || null;
+}
+
+/* ============================================================
+   PASSAGE LOAD / SYNC
+   ============================================================ */
+function getSheetUrl(){ return localStorage.getItem('gv_sheet_url') || ""; }
+
+function loadLocalPassage(){
+  var raw = localStorage.getItem('active_passage');
+  if (raw){
+    try {
+      var saved=JSON.parse(raw);
+      if (saved && saved.title==='Cây bàng' && !saved.shareId && String(saved.content||'').indexOf('Mùa xuân, lá bàng mới nảy')===0){
+        localStorage.removeItem('active_passage');
+      } else if (saved && saved.title && saved.content) return saved;
+    } catch(e){}
+  }
+  return DEFAULT_PASSAGE;
+}
+
+function saveLocalPassage(p){
+  localStorage.setItem('active_passage', JSON.stringify(p));
+}
+
+function encodeShareData(value){
+  return btoa(unescape(encodeURIComponent(JSON.stringify(value))));
+}
+function decodeShareData(value){
+  try { return JSON.parse(decodeURIComponent(escape(atob(value)))); } catch(e){ return null; }
+}
+
+function initPassageFromUrlParam(){
+  var params = new URLSearchParams(window.location.search);
+  var shareId = params.get('baiId');
+  var shared = params.get('bai');
+  if (shareId){
+    state.sharedPassageId = shareId;
+    document.body.classList.add('shared-mode');
+  }
+  if (shared){
+    var passage = decodeShareData(shared);
+    if (passage && passage.title && passage.content){
+      state.sharedPassage = passage;
+      state.sharedPassageId = state.sharedPassageId || passage.shareId || null;
+      document.body.classList.add('shared-mode');
+    }
+  }
+  var sheet = params.get('sheet');
+  if (sheet){
+    localStorage.setItem('gv_sheet_url', sheet);
+  }
+}
+
+function fetchPassageFromSheet(){
+  var url = getSheetUrl();
+  if (!url) return Promise.resolve(null);
+  return fetch(url + (url.indexOf('?')>-1?'&':'?') + 'action=getPassage')
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (data && data.title) return data;
+      return null;
+    })
+    .catch(function(){ return null; });
+}
+
+function serverPassage(shareId){
+  return fetch('/api/trpc/passage.get?input='+encodeURIComponent(JSON.stringify({json:{shareId:shareId}})),{credentials:'include'})
+    .then(function(r){return r.json().then(function(body){if(!r.ok)throw new Error('not found');var data=body && body.result && body.result.data && body.result.data.json;if(!data || !data.title || !data.content)throw new Error('invalid passage');return data;});});
+}
+function serverLatestPassage(){
+  return fetch('/api/trpc/passage.list?input='+encodeURIComponent(JSON.stringify({json:{}})),{credentials:'include'})
+    .then(function(r){if(!r.ok)throw new Error('latest passage unavailable');return r.json();})
+    .then(function(body){
+      var rows=body&&body.result&&body.result.data&&body.result.data.json;
+      if(!Array.isArray(rows)||!rows.length)return null;
+      return rows.filter(function(p){return p&&p.title&&p.content;}).sort(function(a,b){return new Date(b.updatedAt||b.createdAt||0)-new Date(a.updatedAt||a.createdAt||0);})[0]||null;
+    });
+}
+function savePassageOnline(passage, generateWithAI){
+  passage.shareId=passage.shareId || newPassageId();
+  return fetch('/api/trpc/passage.save',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify({json:{shareId:passage.shareId,title:passage.title,content:passage.content,author:passage.author||'',audioUrl:passage.audioUrl||undefined,quiz:generateWithAI?undefined:passage.quiz,generateWithAI:!!generateWithAI}})})
+    .then(function(r){return r.json().then(function(body){if(!r.ok)throw new Error(body && body.error && body.error.json && body.error.json.message || 'Không lưu được bài giao.');var saved=body && body.result && body.result.data && body.result.data.json;if(saved && saved.quiz){passage.quiz=saved.quiz;passage.aiGenerated=saved.aiGenerated;}return saved;});});
+}
+
+function loadPassage(){
+  if (state.sharedPassageId){
+    if (state.sharedPassage) renderPassage(state.sharedPassage);
+    else { $('titleText').textContent='Đang tải bài cô giao...'; $('contentText').textContent=''; }
+    serverPassage(state.sharedPassageId).then(function(remote){
+      if (!document.body) return;
+      state.sharedPassage=remote; renderPassage(remote);
+    }).catch(function(){
+      if (!document.body) return;
+      if (state.sharedPassage) renderPassage(state.sharedPassage);
+      else renderPassage(DEFAULT_PASSAGE);
+      toast('Không tải được bản mới nhất của bài giao.');
+    });
+    return;
+  }
+  if (state.sharedPassage){
+    renderPassage(state.sharedPassage);
+    return;
+  }
+  var libraryPassage = loadLibraryPassageFromUrl();
+  if (libraryPassage){
+    renderPassage({title:libraryPassage.title,content:libraryPassage.content,author:libraryPassage.author,libraryWeek:libraryPassage.week,libraryTheme:libraryPassage.theme,shareId:'library-week-'+libraryPassage.week,audioUrl:FIXED_SAMPLE_AUDIO[libraryPassage.week]});
+    return;
+  }
+  var local = loadLocalPassage();
+  renderPassage(local);
+  /* localStorage chỉ là cache của từng trình duyệt. Bài giao chính thức
+     phải lấy từ máy chủ để Chrome/Cốc Cốc/điện thoại đều thấy cùng dữ liệu. */
+  serverLatestPassage().then(function(remote){
+    if (remote){
+      saveLocalPassage(remote);
+      state.sharedPassage=remote;
+      state.sharedPassageId=remote.shareId||null;
+      renderPassage(remote);
+    }
+  }).catch(function(){
+    return fetchPassageFromSheet().then(function(remote){
+      if (remote){saveLocalPassage(remote);renderPassage(remote);}
+    });
+  });
+}
+
+/* ============================================================
+   SAMPLE VOICE (speechSynthesis)
+   ============================================================ */
+function findVietnameseVoice(voices){
+  return voices.filter(function(v){
+    var lang=(v.lang||'').toLowerCase(), name=(v.name||'').toLowerCase();
+    return lang.indexOf('vi')===0 || name.indexOf('vietnam')>-1 || name.indexOf('tiếng việt')>-1;
+  }).sort(function(a,b){return vietnameseVoiceScore(b)-vietnameseVoiceScore(a);})[0] || null;
+}
+function vietnameseVoiceScore(voice){
+  var name=(voice.name||'').toLowerCase(), score=0;
+  /* HoaiMy/giọng nữ tiếng Việt thường là lựa chọn gần chất giọng cô giáo miền Nam
+     nhất trong danh sách giọng mà iOS, macOS và một số trình duyệt cung cấp. */
+  if (/hoaimy|hoài mỹ|southern|mien nam|miền nam/.test(name)) score+=100;
+  if (/female|woman|nữ|mai|linh/.test(name)) score+=20;
+  if (/google vietnamese|microsoft vietnamese/.test(name)) score+=10;
+  return score;
+}
+function populateVoiceOptions(voices){
+  var select=$('voiceSelect'); if (!select) return;
+  var old=state.teacherSettings.voiceName || 'auto';
+  select.innerHTML='<option value="auto">Tự chọn giọng tiếng Việt</option>';
+  voices.filter(function(v){return /^vi/i.test(v.lang||'') || /vietnam|tiếng việt/i.test(v.name||'');}).sort(function(a,b){return vietnameseVoiceScore(b)-vietnameseVoiceScore(a);}).forEach(function(v){
+    var opt=document.createElement('option'); opt.value=v.name; opt.textContent=v.name+' ('+v.lang+')'; select.appendChild(opt);
+  });
+  select.value=Array.from(select.options).some(function(o){return o.value===old;})?old:'auto';
+}
+function getSelectedVietnameseVoice(){
+  var voices=('speechSynthesis' in window)?speechSynthesis.getVoices():[];
+  if (state.teacherSettings.voiceName && state.teacherSettings.voiceName!=='auto'){
+    var chosen=voices.find(function(v){return v.name===state.teacherSettings.voiceName;}); if (chosen && /^vi(?:-|$)/i.test(chosen.lang||'')) return chosen;
+  }
+  return findVietnameseVoice(voices);
+}
+function hasVietnameseVoice(){ return !!getSelectedVietnameseVoice(); }
+
+function initSampleVoice(){
+  $('sampleBtn').classList.remove('hidden');
+  if (!('speechSynthesis' in window)) return;
+  function check(){
+    var voices = speechSynthesis.getVoices();
+    var v = findVietnameseVoice(voices);
+    // Audio tích hợp không cần voice hệ điều hành; voice thiết bị chỉ dùng cho nội dung riêng.
+    state.sampleVoice = v;
+    populateVoiceOptions(voices);
+    updateVoiceStatus();
+    $('sampleBtn').classList.remove('hidden');
+  }
+  check();
+  if (typeof speechSynthesis.onvoiceschanged !== 'undefined'){
+    speechSynthesis.onvoiceschanged = check;
+  }
+  setTimeout(check, 800);
+}
+
+function speakSampleExpressively(text){
+  var chunks=(text.match(/[^.!?…:;]+[.!?…:;]?/g)||[text]).map(function(part){return part.trim();}).filter(Boolean);
+  var index=0;
+  var selectedVoice=getSelectedVietnameseVoice(), run=audioRun;
+  function next(){
+    if (run!==audioRun) return;
+    if (!state.isSpeaking || index>=chunks.length){state.isSpeaking=false;$('sampleBtn').textContent='🔊 Nghe phát âm mẫu';return;}
+    var part=chunks[index++], utt=new SpeechSynthesisUtterance(part);
+    if(selectedVoice) utt.voice=selectedVoice;
+    utt.lang='vi-VN'; utt.volume=1;
+    var ending=part.slice(-1);
+    utt.rate=ending==='!'?0.88:(ending==='?'?0.84:0.80);
+    utt.pitch=ending==='?'?1.12:(ending==='!'?1.08:1.02);
+    utt.onend=function(){if(state.isSpeaking)setTimeout(next,/[,;:]/.test(ending)?90:(/[.!?…]/.test(ending)?220:60));};
+    utt.onerror=function(){state.isSpeaking=false;$('sampleBtn').textContent='🔊 Nghe phát âm mẫu';};
+    speechSynthesis.speak(utt);
+  }
+  next();
+}
+var activeAudioButton=null, activeAudioLabel='', audioRun=0;
+function stopAllSpeech(){
+  audioRun++;state.feedbackSpeechId=(state.feedbackSpeechId||0)+1;
+  state.isSpeaking=false;
+  if(fixedSampleAudio){fixedSampleAudio.onended=null;fixedSampleAudio.onerror=null;fixedSampleAudio.pause();try{fixedSampleAudio.currentTime=0;}catch(ignore){}}
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+  if(activeAudioButton) activeAudioButton.textContent=activeAudioLabel;
+  activeAudioButton=null;
+  if($('sampleBtn'))$('sampleBtn').textContent='🔊 Nghe phát âm mẫu';
+}
+function playVietnameseAudio(url, button, label){
+  if(state.isReading){toast('Con dừng đọc bài trước khi nghe mẫu nhé.');return;}
+  if(activeAudioButton===button && state.isSpeaking){stopAllSpeech();return;}
+  stopAllSpeech();
+  if(!fixedSampleAudio){toast('Trình duyệt chưa phát được audio. Hãy dùng Safari hoặc Chrome mới nhất.');return;}
+  var run=audioRun;
+  activeAudioButton=button;activeAudioLabel=label;state.isSpeaking=true;
+  button.textContent='Dừng nghe';
+  fixedSampleAudio.preload='auto';
+  var tries=0;
+  function attempt(){
+    if(run!==audioRun)return;
+    fixedSampleAudio.src=url;
+    fixedSampleAudio.onended=function(){if(run===audioRun)stopAllSpeech();};
+    fixedSampleAudio.onerror=function(){
+      if(run!==audioRun)return;
+      if(tries++<8){
+        $('voiceStatus').textContent='Audio đang được máy chủ hoàn tất, app sẽ thử lại...';
+        setTimeout(attempt,1200);
+      } else {
+        stopAllSpeech();
+        $('voiceStatus').textContent='Chưa tải được audio miền Nam. Con bấm nghe lại hoặc kiểm tra mạng nhé.';
+        toast('Audio đang bận hoặc mạng chậm. Con bấm nghe lại sau một chút nhé.');
+      }
+    };
+    var playing=fixedSampleAudio.play();
+    if(playing && playing.catch)playing.catch(function(error){
+      if(run!==audioRun)return;
+      if(error && error.name==='NotAllowedError'){
+        stopAllSpeech();
+        $('voiceStatus').textContent='Trình duyệt chặn tự phát. Con bấm nút Nghe để phát audio.';
+        toast('Con bấm nút Nghe để trình duyệt cho phép phát audio nhé.');
+      } else if(tries++<8){
+        setTimeout(attempt,1200);
+      } else {
+        stopAllSpeech();
+        $('voiceStatus').textContent='Không phát được audio. Con kiểm tra mạng và thử lại nhé.';
+      }
+    });
+  }
+  attempt();
+}
+function isUsableAudioUrl(url){
+  return typeof url==='string' && /^https?:\/\//i.test(url);
+}
+function sampleAudioFor(p){
+  if(!p)return '';
+  if(isUsableAudioUrl(p.audioUrl))return p.audioUrl;
+  return getFixedAudioUrl(p);
+}
+function updateVoiceStatus(){
+  if(!$('voiceStatus') || !state.passage)return;
+  $('voiceStatus').textContent=sampleAudioFor(state.passage)?'Audio giọng nữ miền Nam đã sẵn sàng — bấm nghe để phát trên mọi trình duyệt.':'Bấm nghe để máy chủ tạo audio giọng nữ miền Nam chuẩn cho bài này.';
+}
+function requestPassageAudio(passage){
+  if(!passage || !passage.title || !passage.content) return Promise.reject(new Error('Bài đọc chưa đủ nội dung.'));
+  if(isUsableAudioUrl(passage.audioUrl)) return Promise.resolve(passage.audioUrl);
+  passage.shareId=passage.shareId || ('tts-'+Date.now().toString(36));
+  return fetch('/api/trpc/passage.generateAudio',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify({json:{shareId:passage.shareId,title:passage.title,content:passage.content,author:passage.author||'',voice:'linhsan'}})})
+    .then(function(r){return r.json().then(function(body){if(!r.ok)throw new Error(body&&body.error&&body.error.json&&body.error.json.message||'Không tạo được audio.');var data=body&&body.result&&body.result.data&&body.result.data.json;if(!data||!isUsableAudioUrl(data.audioUrl))throw new Error('Máy chủ chưa trả URL audio hợp lệ.');return data.audioUrl;});})
+    .then(function(url){passage.audioUrl=url;if(state.passage===passage)state.passage.audioUrl=url;if(state.sharedPassage===passage)state.sharedPassage.audioUrl=url;saveLocalPassage(passage);updateVoiceStatus();return url;});
+}
+function requestFeedbackAudio(text){
+  text=(text||'').trim();
+  if(state.feedbackAudioUrl && state.feedbackAudioText===text)return Promise.resolve(state.feedbackAudioUrl);
+  return fetch('/api/trpc/reading.feedbackAudio',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify({json:{text:text,voice:'linhsan'}})})
+    .then(function(r){return r.json().then(function(body){if(!r.ok)throw new Error(body&&body.error&&body.error.json&&body.error.json.message||'Không tạo được audio nhận xét.');var data=body&&body.result&&body.result.data&&body.result.data.json;if(!data||!isUsableAudioUrl(data.audioUrl))throw new Error('Máy chủ chưa trả URL audio nhận xét hợp lệ.');return data.audioUrl;});})
+    .then(function(url){state.feedbackAudioText=text;state.feedbackAudioUrl=url;return url;});
+}
+$('sampleBtn').addEventListener('click',function(){
+  if(state.isReading){toast('Con dừng đọc bài trước khi nghe mẫu nhé.');return;}
+  if(state.isSpeaking && (activeAudioButton===$('sampleBtn') || !activeAudioButton)){stopAllSpeech();return;}
+  var p=state.passage, url=sampleAudioFor(p);
+  if(url){playVietnameseAudio(url,$('sampleBtn'),'🔊 Nghe phát âm mẫu');return;}
+  $('sampleBtn').disabled=true;$('voiceStatus').textContent='Đang tạo audio giọng nữ miền Nam...';
+  requestPassageAudio(p).then(function(audioUrl){playVietnameseAudio(audioUrl,$('sampleBtn'),'🔊 Nghe phát âm mẫu');})
+    .catch(function(){
+      $('voiceStatus').textContent='Chưa tạo được audio máy chủ; cô có thể bấm lại sau hoặc dùng giọng vi-VN của trình duyệt.';
+      if('speechSynthesis' in window){stopAllSpeech();state.isSpeaking=true;$('sampleBtn').textContent='Dừng nghe';speakSampleExpressively([p.title,p.content,p.author].filter(Boolean).join('. '));}
+      else toast('Chưa tạo được audio. Con kiểm tra mạng rồi thử lại nhé.');
+    }).finally(function(){$('sampleBtn').disabled=false;});
+});
+$('voicePreviewBtn').addEventListener('click',function(){
+  var text='Con đọc chậm rãi, rõ từng tiếng và cố gắng lên nhé.';
+  requestFeedbackAudio(text).then(function(url){playVietnameseAudio(url,$('voicePreviewBtn'),'Nghe thử giọng tích hợp');})
+    .catch(function(){if('speechSynthesis' in window){stopAllSpeech();state.isSpeaking=true;speakSampleExpressively(text);}else toast('Chưa tạo được audio thử giọng.');});
+});
+
+$('checkQuizBtn').addEventListener('click', checkReadingQuiz);
+
+/* ============================================================
+   SPEECH RECOGNITION SETUP
+   ============================================================ */
+var SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition;
+var recognitionSupported = !!SpeechRecognitionCtor;
+
+function showMicHelp(message){
+  var help=$('micHelp');
+  if (!help) return;
+  if (message) help.querySelector('strong').textContent=message;
+  help.classList.add('show');
+}
+function hideMicHelp(){
+  var help=$('micHelp');
+  if (help) help.classList.remove('show');
+}
+function requestMicrophonePermission(){
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+    showMicHelp('Trình duyệt hiện tại không hỗ trợ microphone.');
+    toast('Hãy mở link bằng Chrome hoặc Safari phiên bản mới nhất nhé.');
+    return;
+  }
+  navigator.mediaDevices.getUserMedia({audio:true}).then(function(stream){
+    stream.getTracks().forEach(function(track){track.stop();});
+    hideMicHelp();
+    toast('Đã cấp quyền microphone. Bây giờ con bấm nút 🎤 để đọc bài nhé!');
+  }).catch(function(){
+    showMicHelp('Microphone đang bị chặn.');
+    toast('Hãy chọn “Cho phép” microphone trong cài đặt trình duyệt nhé.');
+  });
+}
+
+function createRecognition(){
+  var r = new SpeechRecognitionCtor();
+  r.lang = 'vi-VN';
+  r.continuous = true;
+  r.interimResults = true;
+  r.maxAlternatives = 1;
+  return r;
+}
+
+/* Longest common subsequence alignment between target words and recognized words */
+function computeAlignment(targetNorms, recognizedNorms){
+  var n = targetNorms.length, m = recognizedNorms.length;
+  var matched = new Set();
+  if (n === 0 || m === 0) return matched;
+  var dp = [];
+  for (var i=0;i<=n;i++){ dp.push(new Int16Array(m+1)); }
+  for (i=1;i<=n;i++){
+    for (var j=1;j<=m;j++){
+      if (wordsEquivalent(targetNorms[i-1], recognizedNorms[j-1])){
+        dp[i][j] = dp[i-1][j-1] + 1;
+      } else {
+        dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+      }
+    }
+  }
+  i = n; var j = m;
+  while (i>0 && j>0){
+    if (wordsEquivalent(targetNorms[i-1], recognizedNorms[j-1])){
+      matched.add(i-1); i--; j--;
+    } else if (dp[i-1][j] >= dp[i][j-1]){
+      i--;
+    } else {
+      j--;
+    }
+  }
+  return matched;
+}
+
+function currentRecognizedNorms(){
+  var text = (state.finalTranscript + " " + state.interimTranscript).trim();
+  if (!text) return [];
+  return text.split(/\s+/).map(normalizeWord).filter(Boolean);
+}
+
+function transcriptNorms(text){
+  return (text || '').trim().split(/\s+/).map(normalizeWord).filter(Boolean);
+}
+
+function updateReadingPace(frontier, activeIndex, recognizedCount){
+  state.liveFrontier=frontier;
+  state.liveActiveIndex=activeIndex;
+  if (!state.isReading || !recognizedCount || !state.readingStartedAt) return;
+  var elapsed=Math.max(1,((window.performance&&performance.now)?performance.now():Date.now())-state.readingStartedAt);
+  state.readingWpm=Math.round(recognizedCount/(elapsed/60000));
+  var next=state.allWords[Math.min(state.allWords.length-1,Math.max(0,activeIndex))];
+  if ($('micHint')) $('micHint').textContent='Đang bắt nhịp '+state.readingWpm+' từ/phút'+(next?' • gần từ “'+next.raw+'”':'');
+}
+
+function applyLiveColors(){
+  var targetNorms = state.allWords.map(function(w){return w.norm;});
+  var recognized = currentRecognizedNorms();
+  var matched = computeAlignment(targetNorms, recognized);
+  /* Chỉ đánh dấu phần học sinh đã đi qua; không tô đỏ phần chưa đọc. */
+  var frontier = Math.min(targetNorms.length, recognized.length);
+  var finalCount=transcriptNorms(state.finalTranscript).length;
+  var interimCount=transcriptNorms(state.interimTranscript).length;
+  var activeIndex=interimCount ? Math.min(targetNorms.length-1,finalCount+interimCount-1) : Math.min(targetNorms.length-1,frontier);
+  updateReadingPace(frontier,activeIndex,recognized.length);
+  state.allWords.forEach(function(w,i){
+    var el = $('w-'+w.idx);
+    if (!el) return;
+    if (state.isReading && recognized.length && i===activeIndex){
+      el.className = 'w live';
+    } else if (matched.has(i)){
+      el.className = 'w correct';
+    } else if (i < frontier){
+      el.className = 'w wrong';
+    } else {
+      el.className = 'w';
+    }
+  });
+}
+
+function finalizeScoring(){
+  var targetNorms = state.allWords.map(function(w){return w.norm;});
+  var recognized = currentRecognizedNorms();
+  var matched = computeAlignment(targetNorms, recognized);
+  var wrongWords = [];
+  state.allWords.forEach(function(w,i){
+    var el = $('w-'+w.idx);
+    if (matched.has(i)){
+      if (el) el.className = 'w correct';
+    } else {
+      if (el) el.className = 'w wrong';
+      wrongWords.push({idx:w.idx, raw:w.raw});
+    }
+  });
+  var percent = state.allWords.length ? Math.round((matched.size/state.allWords.length)*100) : 0;
+  return {matched:matched, percent:percent, wrongWords:wrongWords};
+}
+
+/* ============================================================
+   AUDIO RECORDING
+   ============================================================ */
+function blobToBase64(blob){
+  return new Promise(function(resolve, reject){
+    var reader = new FileReader();
+    reader.onloadend = function(){ resolve(reader.result); };
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
+function startRecordingAudio(){
+  return navigator.mediaDevices.getUserMedia({audio:true}).then(function(stream){
+    state.audioStream = stream;
+    state.audioChunks = [];
+    var mr = new MediaRecorder(stream);
+    mr.ondataavailable = function(e){ if (e.data && e.data.size>0) state.audioChunks.push(e.data); };
+    mr.start();
+    state.mediaRecorder = mr;
+  });
+}
+
+function stopRecordingAudio(){
+  return new Promise(function(resolve){
+    if (!state.mediaRecorder || state.mediaRecorder.state === 'inactive'){
+      resolve(null); return;
+    }
+    state.mediaRecorder.onstop = function(){
+      var blob = new Blob(state.audioChunks, {type:'audio/webm'});
+      if (state.audioStream){ state.audioStream.getTracks().forEach(function(t){ t.stop(); }); }
+      if (blob.size === 0){ resolve(null); return; }
+      blobToBase64(blob).then(resolve);
+    };
+    state.mediaRecorder.stop();
+  });
+}
+
+/* ============================================================
+   MAIN READING FLOW
+   ============================================================ */
+function updateMicUI(){
+  var btn = $('micBtn');
+  var label = $('micLabel');
+  if (state.isReading){
+    btn.classList.add('listening');
+    btn.textContent = '⏹';
+    btn.setAttribute('aria-label','Dừng đọc và chấm điểm');
+    label.textContent = 'ĐANG NGHE... BẤM ĐỂ DỪNG';
+  } else {
+    btn.classList.remove('listening');
+    btn.textContent = '🎤';
+    btn.setAttribute('aria-label','Bắt đầu đọc bài');
+    label.textContent = state.attempts.length ? 'BẤM ĐỂ ĐỌC LẠI' : 'BẤM ĐỂ BẮT ĐẦU ĐỌC BÀI';
+  }
+}
+
+function resetAttempts(){
+  state.attempts = [];
+  state.currentAttemptIndex = -1;
+  state.correctedIdx = new Set();
+  $('resultPanel').classList.remove('show');
+  $('submitBtn').disabled = true;
+  $('submitStatus').textContent = '';
+  updateMicUI();
+}
+
+$('micBtn').addEventListener('click', function(){
+  if (!recognitionSupported){
+    showMicHelp('Trình duyệt này chưa hỗ trợ nhận diện giọng nói.');
+    toast('Trình duyệt này chưa hỗ trợ nhận diện giọng nói. Hãy dùng Google Chrome nhé!');
+    return;
+  }
+  if (!state.isReading){
+    startReadingAttempt();
+  } else {
+    stopReadingAttempt();
+  }
+});
+
+$('micPermissionBtn').addEventListener('click', requestMicrophonePermission);
+
+function startReadingAttempt(){
+  stopAllSpeech();
+  var name = $('stuName').value.trim();
+  if (!name){
+    toast('Con hãy nhập họ tên trước khi đọc bài nhé!');
+    $('stuName').focus();
+    return;
+  }
+  localStorage.setItem('last_stu_name', name);
+  localStorage.setItem('last_stu_class', $('stuClass').value.trim());
+
+  resetWordColors();
+  state.finalTranscript = "";
+  state.interimTranscript = "";
+
+  /* Khởi động SpeechRecognition ngay trong click handler. Trên iPhone/Android,
+     chờ getUserMedia() xong rồi mới start() thường làm mất user gesture. */
+  state.isReading = true;
+  state.readingStartedAt=(window.performance&&performance.now)?performance.now():Date.now();
+  state.readingWpm=0;
+  state.liveFrontier=0;
+  state.liveActiveIndex=-1;
+  if ($('micHint')) $('micHint').textContent='Đang lắng nghe giọng đọc của con...';
+  state.pendingFinalize = false;
+  state.recognitionRunId++;
+  var runId = state.recognitionRunId;
+  try{
+    state.recognition = createRecognition();
+  } catch(e){
+    state.isReading = false;
+    toast('Không thể khởi động nhận diện giọng nói.');
+    return;
+  }
+  state.recognition.onresult = function(e){
+    var finalChunk = "";
+    var interimChunk = "";
+    for (var k=e.resultIndex; k<e.results.length; k++){
+      var res = e.results[k];
+      if (res.isFinal) finalChunk += res[0].transcript + " ";
+      else interimChunk += res[0].transcript + " ";
+    }
+    if (finalChunk) state.finalTranscript += finalChunk;
+    state.interimTranscript = interimChunk;
+    applyLiveColors();
+  };
+  state.recognition.onerror = function(e){
+    state.lastRecognitionError = e && e.error || '';
+    if (state.lastRecognitionError === 'not-allowed' || state.lastRecognitionError === 'service-not-allowed'){
+      state.isReading = false;
+      updateMicUI();
+      showMicHelp('Microphone đang bị chặn.');
+      toast('Hãy cấp quyền microphone cho Chrome/Safari và mở trang bằng HTTPS nhé.');
+    }
+  };
+  state.recognition.onend = function(){
+    clearTimeout(state.finalizeTimer);
+    if (state.pendingFinalize){
+      state.pendingFinalize = false;
+      completeAttempt();
+    } else if (state.isReading && runId === state.recognitionRunId){
+      /* Chrome mobile tự đóng phiên sau một khoảng im lặng; nối lại để không
+         bị mất các từ khi học sinh đọc chậm hoặc ngắt theo dấu câu. */
+      clearTimeout(state.recognitionRestartTimer);
+      state.recognitionRestartTimer = setTimeout(function(){
+        if (!state.isReading || runId !== state.recognitionRunId) return;
+        try { state.recognition.start(); } catch(ignore) {}
+      }, 120);
+    }
+  };
+  try{
+    state.recognition.start();
+    updateMicUI();
+  } catch(e){
+    state.isReading = false;
+    updateMicUI();
+    showMicHelp('Không thể mở microphone.');
+    toast('Không thể bắt đầu nghe. Hãy kiểm tra quyền microphone rồi thử lại.');
+  }
+  startRecordingAudio().catch(function(){
+    /* Chấm đọc vẫn hoạt động nếu trình duyệt từ chối ghi âm; chỉ không lưu file. */
+    showMicHelp('Chưa được cấp quyền ghi âm.');
+  });
+}
+
+function stopReadingAttempt(){
+  state.isReading = false;
+  state.recognitionRunId++;
+  clearTimeout(state.recognitionRestartTimer);
+  state.pendingFinalize = true;
+  updateMicUI();
+  if ($('micHint')) $('micHint').textContent=state.readingWpm ? 'Đã bắt nhịp khoảng '+state.readingWpm+' từ/phút. Đang chấm điểm...' : 'Đang chấm điểm...';
+  $('micLabel').textContent = 'ĐANG CHẤM ĐIỂM...';
+
+  // Dự phòng: nếu vì lý do gì đó (mạng chậm, trình duyệt không bắn sự kiện 'onend')
+  // mà việc dừng nhận diện giọng nói không hoàn tất, tự động chấm điểm sau 4 giây
+  // để app không bị treo mãi ở trạng thái "ĐANG CHẤM ĐIỂM...".
+  clearTimeout(state.finalizeTimer);
+  state.finalizeTimer = setTimeout(function(){
+    if (state.pendingFinalize){
+      state.pendingFinalize = false;
+      completeAttempt();
+    }
+  }, 1800);
+
+  try{
+    state.recognition.stop();
+  } catch(e){
+    clearTimeout(state.finalizeTimer);
+    if (state.pendingFinalize){
+      state.pendingFinalize = false;
+      completeAttempt();
+    }
+  }
+}
+
+function completeAttempt(){
+  var scoring = finalizeScoring();
+  stopRecordingAudio().then(function(audioBase64){
+    var attempt = {
+      matched: scoring.matched,
+      correctedIdx: new Set(),
+      percent: scoring.percent,
+      wrongWords: scoring.wrongWords,
+      audioBase64: audioBase64
+    };
+    state.attempts.push(attempt);
+    state.currentAttemptIndex = state.attempts.length - 1;
+    renderResultPanel(true, false);
+    updateMicUI();
+  });
+}
+
+/* ============================================================
+   RESULT PANEL + RETRY WORDS
+   ============================================================ */
+function getBestAttempt(){
+  var best = null;
+  state.attempts.forEach(function(a){
+    var corrected = new Set(a.correctedIdx || []);
+    state.correctedIdx.forEach(function(idx){ corrected.add(idx); });
+    var effectiveCount = new Set(Array.from(a.matched).concat(Array.from(corrected))).size;
+    var effectivePercent = state.allWords.length ? Math.round((effectiveCount / state.allWords.length) * 100) : 0;
+    if (!best || effectivePercent > best.effectivePercent){
+      best = {attempt:a, effectivePercent:effectivePercent, corrected:corrected};
+    }
+  });
+  return best;
+}
+
+function getRemainingWords(attempt){
+  return attempt.wrongWords.filter(function(w){
+    return !attempt.correctedIdx.has(w.idx) && !state.correctedIdx.has(w.idx);
+  });
+}
+
+function feedbackSentence(effPercent, remaining){
+  if (effPercent >= 90) return 'Con đọc rất tốt! Cô khen con đã đọc rõ ràng và biết lắng nghe để sửa lỗi.';
+  if (effPercent >= 75) return 'Con đọc khá tốt! Con đã đọc đúng phần lớn bài đọc rồi.';
+  if (effPercent >= 50) return 'Con đã rất cố gắng. Con hãy đọc chậm hơn một chút và chú ý phát âm rõ từng từ nhé.';
+  return 'Con hãy bình tĩnh đọc chậm rãi hơn nhé. Cô tin rằng con sẽ tiến bộ sau mỗi lần luyện tập.';
+}
+
+function speakTeacherFeedback(effPercent, remaining, autoPlay){
+  var button=$('feedbackAudioBtn');
+  if(state.isReading)return;
+  if(activeAudioButton===button && state.isSpeaking){stopAllSpeech();return;}
+  var name = $('stuName').value.trim() || 'con';
+  var words = remaining.slice(0, 8).map(function(w){return w.raw;}).join(', ');
+  var custom = state.teacherSettings.praise || '';
+  var text = custom ? custom.replace(/\{name\}/g,name).replace(/\{score\}/g,effPercent+'%').replace(/\{words\}/g,words) : (state.aiFeedback || (name + '. ' + feedbackSentence(effPercent, remaining)));
+  if (!custom){
+    if (remaining.length) text += ' Con nhớ đọc lại các từ ' + words + ' nhé.';
+    else text += ' Con đã sửa đúng những từ cần luyện thêm rồi. Con làm tốt lắm!';
+  }
+  text=text.replace(/\s+/g,' ').trim();
+  function browserFallback(){
+    if(!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance==='undefined'){
+      if(!autoPlay)toast('Chưa tạo được audio nhận xét. Con bấm nghe lại sau nhé.');
+      return;
+    }
+    stopAllSpeech();
+    var voice=getSelectedVietnameseVoice();
+    var chunks=(text.match(/[^.!?…:;]+[.!?…:;]?/g)||[text]).map(function(part){return part.trim();}).filter(Boolean);
+    var token=state.feedbackSpeechId=(state.feedbackSpeechId||0)+1, index=0;
+    state.isSpeaking=true;if(button)button.textContent='Dừng nghe';
+    function next(){
+      if (token!==state.feedbackSpeechId || index>=chunks.length){if(index>=chunks.length)stopAllSpeech();return;}
+      var part=chunks[index++], ending=part.slice(-1), u=new SpeechSynthesisUtterance(part);
+      if (voice) u.voice=voice;
+      u.lang='vi-VN'; u.volume=1;
+      u.rate=ending==='?'?0.82:(ending==='!'?0.86:0.84);
+      u.pitch=ending==='?'?1.16:(ending==='!'?1.10:0.98);
+      u.onend=function(){if (token===state.feedbackSpeechId)setTimeout(next,/[,;:]/.test(ending)?100:(/[.!?…]/.test(ending)?260:70));};
+      u.onerror=function(){state.feedbackSpeechId++;stopAllSpeech();};
+      speechSynthesis.speak(u);
+    }
+    next();
+  }
+  if(state.feedbackAudioUrl && state.feedbackAudioText===text){
+    playVietnameseAudio(state.feedbackAudioUrl,button,'🔊 Nghe cô nhận xét');
+    return;
+  }
+  if(button)button.textContent=autoPlay?'⏳ Đang tạo audio nhận xét...':'⏳ Đang tạo audio...';
+  requestFeedbackAudio(text).then(function(url){
+    if(button)button.textContent='🔊 Nghe cô nhận xét';
+    playVietnameseAudio(url,button,'🔊 Nghe cô nhận xét');
+  }).catch(function(){browserFallback();});
+}
+
+function playApplause(stars){
+  try{
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    var ctx = new AC();
+    for (var n=0;n<10 + (stars||1)*4;n++){
+      (function(i){
+        var start = ctx.currentTime + i * 0.055;
+        var buffer = ctx.createBuffer(1, ctx.sampleRate * 0.075, ctx.sampleRate);
+        var data = buffer.getChannelData(0);
+        for (var j=0;j<data.length;j++) data[j] = (Math.random()*2-1) * (1-j/data.length);
+        var src=ctx.createBufferSource(), gain=ctx.createGain(), filter=ctx.createBiquadFilter();
+        src.buffer=buffer; filter.type='bandpass'; filter.frequency.value=900+(stars||1)*280+Math.random()*1800;
+        gain.gain.setValueAtTime(0.0001,start); gain.gain.exponentialRampToValueAtTime(0.18,start+0.008); gain.gain.exponentialRampToValueAtTime(0.0001,start+0.07);
+        src.connect(filter).connect(gain).connect(ctx.destination); src.start(start); src.stop(start+0.08);
+      })(n);
+    }
+    setTimeout(function(){try{ctx.close();}catch(ignore){}},2200);
+  }catch(ignore){}
+}
+
+function launchCelebration(stars){
+  var layer=$('celebrationLayer'); if (!layer) return;
+  layer.innerHTML='';
+  var colors=(stars>=5)?['#FFB800','#FFF2A8','#FF5A5F']:((stars>=3)?['#1FA971','#2F8FB5','#FFB800']:['#FF5A5F','#FFB800','#2F8FB5']);
+  for (var i=0;i<38+(stars||1)*14;i++){
+    var c=document.createElement('i'); c.className='confetti'; c.style.left=(8+Math.random()*84)+'%';
+    c.style.background=colors[i%colors.length]; c.style.setProperty('--dx',((Math.random()-.5)*260)+'px');
+    c.style.setProperty('--rot',(360+Math.random()*720)+'deg'); c.style.animationDelay=(Math.random()*.35)+'s';
+    if ((stars||1)>=4){c.style.width='14px';c.style.height='14px';c.style.borderRadius='50%';}
+    layer.appendChild(c);
+  }
+  setTimeout(function(){layer.innerHTML='';},2600);
+}
+
+function rewardStars(effPercent){ return Math.max(1,Math.min(5,Math.ceil(effPercent/20))); }
+function celebrate(effPercent, correctedNow){
+  var stars=rewardStars(effPercent);
+  if (correctedNow || effPercent >= 75){ playApplause(stars); launchCelebration(stars); }
+}
+
+function recordAchievement(effPercent){
+  var name=$('stuName').value.trim() || 'Học sinh';
+  var title=state.passage ? state.passage.title : 'Bài đọc';
+  var key=name+'|'+title, stars=rewardStars(effPercent);
+  var item=state.achievements.find(function(a){return a.key===key;});
+  if (!item){ item={key:key,name:name,title:title,stars:stars,percent:effPercent,time:new Date().toISOString()}; state.achievements.push(item); }
+  else { item.stars=Math.max(item.stars,stars); item.percent=Math.max(item.percent,effPercent); item.time=new Date().toISOString(); }
+  saveAchievements();
+}
+function renderAchievementBoard(){
+  var list=$('achievementList'); if (!list) return;
+  var name=$('stuName').value.trim();
+  var mine=state.achievements.filter(function(a){return !name || a.name===name;});
+  var total=mine.reduce(function(sum,a){return sum+a.stars;},0);
+  list.innerHTML='<div class="achievement-item">Tổng sao luyện tập trên máy này của con: <b>'+total+'</b></div>';
+}
+
+function renderTeacherFeedback(attempt, effPercent, announce){
+  state.aiFeedback='';
+  state.feedbackAudioUrl='';
+  state.feedbackAudioText='';
+  state.feedbackAudioStartedFor=0;
+  var feedbackRequestId=++state.feedbackRequestId;
+  var remaining = attempt.wrongWords.filter(function(w){
+    return !attempt.correctedIdx.has(w.idx) && !state.correctedIdx.has(w.idx);
+  });
+  var name = $('stuName').value.trim() || 'con';
+  var message = state.teacherSettings.praise ? state.teacherSettings.praise.replace(/\{name\}/g,name).replace(/\{score\}/g,effPercent+'%').replace(/\{words\}/g,remaining.slice(0,8).map(function(w){return w.raw;}).join(', ')) : feedbackSentence(effPercent, remaining);
+  var starCount = rewardStars(effPercent);
+  var stars = '★'.repeat(starCount) + '☆'.repeat(5-starCount);
+  var html = '<div class="feedback-title">👩‍🏫 Cô giáo AI nhận xét tự động</div>' +
+    '<div class="feedback-stars" aria-label="'+starCount+' trên 5 sao">'+stars+'</div>' +
+    '<div class="feedback-message">' + escapeHtml(name) + ', ' + escapeHtml(message) + '</div>';
+  if (remaining.length){
+    var focus = remaining.slice(0, 8).map(function(w){ return w.raw; });
+    html += '<div class="feedback-focus">Con nhớ đọc lại các từ: <b>' + escapeHtml(focus.join(', ')) + '</b>' +
+      (remaining.length > focus.length ? ' và một số từ bên dưới' : '') + ' nhé.</div>';
+  } else {
+    html += '<div class="feedback-focus" style="color:var(--green)">🎉 Con đã sửa đúng các từ cần luyện thêm. Bây giờ con có thể chuyển sang bài khác.</div>';
+  }
+  html += '<button class="feedback-audio" id="feedbackAudioBtn">🔊 Nghe lại nhận xét</button>';
+  $('teacherFeedback').innerHTML = html;
+  $('feedbackAudioBtn').addEventListener('click', function(){ speakTeacherFeedback(effPercent, remaining); });
+  if (announce) setTimeout(function(){
+    if(feedbackRequestId!==state.feedbackRequestId || state.feedbackAudioStartedFor)return;
+    state.feedbackAudioStartedFor=feedbackRequestId;
+    speakTeacherFeedback(effPercent, remaining, true);
+  },1800);
+  fetch('/api/trpc/reading.feedback?input='+encodeURIComponent(JSON.stringify({json:{studentName:name,passageTitle:state.passage&&state.passage.title||'',readingScore:effPercent,wrongWords:remaining.map(function(w){return w.raw;}),quizScore:state.quizResult&&state.quizResult.correct,quizTotal:state.quizResult&&state.quizResult.total}})),{credentials:'include'})
+    .then(function(r){if(!r.ok)throw new Error('feedback failed');return r.json();})
+    .then(function(body){
+      var feedback=body&&body.result&&body.result.data&&body.result.data.json;
+      if(feedbackRequestId!==state.feedbackRequestId||typeof feedback!=='string'||!feedback.trim())return;
+      state.aiFeedback=feedback.trim();
+      var messageEl=$('teacherFeedback').querySelector('.feedback-message');
+      if(messageEl)messageEl.textContent=state.aiFeedback;
+      if(announce && !state.feedbackAudioStartedFor){
+        state.feedbackAudioStartedFor=feedbackRequestId;
+        speakTeacherFeedback(effPercent, remaining, true);
+      }
+    }).catch(function(){ /* nhận xét mẫu tại chỗ vẫn hiển thị nếu AI tạm thời bận */ });
+}
+
+function renderResultPanel(announce, correctedNow){
+  $('resultPanel').classList.add('show');
+  var attempt = state.attempts[state.currentAttemptIndex];
+  var corrected = new Set(attempt.correctedIdx || []);
+  state.correctedIdx.forEach(function(idx){ corrected.add(idx); });
+  var effectiveCount = new Set(Array.from(attempt.matched).concat(Array.from(corrected))).size;
+  var effPercent = state.allWords.length ? Math.round((effectiveCount / state.allWords.length) * 100) : 0;
+  $('scoreCircle').style.setProperty('--pct', effPercent);
+  $('scoreValue').textContent = effPercent + '%';
+  var best = getBestAttempt();
+  $('bestMeta').textContent = best ? (best.effectivePercent + '%') : '0%';
+  $('retryCount').textContent = state.attempts.length;
+  $('submitBtn').disabled = false;
+  if (announce) recordAchievement(effPercent);
+  renderAchievementBoard();
+  renderTeacherFeedback(attempt, effPercent, announce);
+  if (announce) celebrate(effPercent, correctedNow);
+
+  var wrap = $('chipsWrap');
+  wrap.innerHTML = '';
+  if (attempt.wrongWords.length === 0){
+    $('wrongPanel').classList.add('hidden');
+  } else {
+    $('wrongPanel').classList.remove('hidden');
+    attempt.wrongWords.forEach(function(w){
+      var chip = document.createElement('button');
+      var isCorrected = attempt.correctedIdx.has(w.idx) || state.correctedIdx.has(w.idx);
+      chip.className = 'chip' + (isCorrected ? ' correct-chip' : '');
+      chip.id = 'chip-' + w.idx;
+      chip.innerHTML = '<span class="mic-mini">🎙️</span><span class="chip-word">'+escapeHtml(w.raw)+'</span><span class="chip-status">'+(isCorrected?'Đúng rồi! ⭐':'')+'</span>';
+      if (!isCorrected){
+        chip.addEventListener('click', function(){ retryWord(w, attempt, chip); });
+      }
+      wrap.appendChild(chip);
+    });
+  }
+}
+
+function retryWord(wordObj, attempt, chipEl){
+  if (state.retryBusy || attempt.correctedIdx.has(wordObj.idx) || state.correctedIdx.has(wordObj.idx)) return;
+  if (!recognitionSupported){
+    toast('Trình duyệt chưa hỗ trợ nhận diện giọng nói.');
+    return;
+  }
+  state.retryBusy = true;
+  chipEl.disabled = true;
+  chipEl.classList.add('listening');
+  var r;
+  try { r = new SpeechRecognitionCtor(); } catch(e){ state.retryBusy=false; chipEl.disabled=false; chipEl.classList.remove('listening'); toast('Không thể mở microphone.'); return; }
+  r.lang = 'vi-VN';
+  r.continuous = false;
+  r.interimResults = false;
+  r.maxAlternatives = 3;
+  var finished = false;
+  r.onresult = function(e){
+    if (finished) return;
+    finished = true;
+    var saidText = '';
+    var alternatives=[];
+    for (var i=0; i<e.results.length; i++){
+      for (var ai=0;ai<e.results[i].length;ai++) alternatives.push(e.results[i][ai].transcript);
+    }
+    saidText = alternatives.join(' ');
+    var saidWords = saidText.trim().split(/\s+/).map(normalizeWord).filter(Boolean);
+    chipEl.classList.remove('listening');
+    if (saidWords.some(function(said){ return wordsEquivalent(said, wordObj.norm); })){
+      attempt.correctedIdx.add(wordObj.idx);
+      state.correctedIdx.add(wordObj.idx);
+      var wEl = $('w-'+wordObj.idx);
+      if (wEl) wEl.className = 'w correct';
+      /* Đổi chip ngay lập tức trước cả khi vẽ lại bảng kết quả để học sinh
+         nhìn thấy rõ từ vừa đọc đúng, không phải đoán trạng thái. */
+      chipEl.classList.remove('listening','shake');
+      chipEl.classList.add('correct-chip');
+      chipEl.disabled = true;
+      var chipStatus = chipEl.querySelector('.chip-status');
+      if (chipStatus) chipStatus.textContent = 'Đúng rồi! ⭐';
+      state.retryBusy = false;
+      renderResultPanel(true, true);
+      toast('Đúng rồi! ⭐');
+    } else {
+      state.retryBusy = false;
+      chipEl.disabled = false;
+      chipEl.classList.add('shake');
+      toast('Con thử lại từ này một lần nữa nhé.');
+      setTimeout(function(){ chipEl.classList.remove('shake'); }, 450);
+    }
+  };
+  r.onerror = function(e){
+    if (finished) return;
+    finished=true; state.retryBusy=false; chipEl.disabled=false; chipEl.classList.remove('listening');
+    if (e && (e.error==='not-allowed' || e.error==='service-not-allowed')) toast('Hãy cấp quyền microphone cho trình duyệt nhé.');
+    else if (e && e.error!=='no-speech') toast('Cô chưa nghe rõ, con thử đọc lại nhé.');
+  };
+  r.onend = function(){
+    chipEl.classList.remove('listening');
+    if (!finished){ state.retryBusy=false; chipEl.disabled=false; }
+  };
+  try{ r.start(); } catch(e){ state.retryBusy=false; chipEl.disabled=false; chipEl.classList.remove('listening'); toast('Microphone đang bận, con thử lại sau một chút nhé.'); }
+}
+
+$('retryAllBtn').addEventListener('click', function(){
+  resetWordColors();
+  $('resultPanel').classList.remove('show');
+  startReadingAttempt();
+});
+
+/* ============================================================
+   SUBMIT
+   ============================================================ */
+function buildPayload(){
+  var best = getBestAttempt();
+  var name = $('stuName').value.trim();
+  var cls = $('stuClass').value.trim();
+  var attempt = best ? best.attempt : null;
+  var wrongRemaining = attempt ? attempt.wrongWords.filter(function(w){
+    return !attempt.correctedIdx.has(w.idx) && !state.correctedIdx.has(w.idx);
+  }).map(function(w){return w.raw;}) : [];
+  return {
+    action: 'submit',
+    submissionId: 'sub_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2),
+    hoTen: name,
+    lop: cls,
+    tenBai: state.passage ? state.passage.title : '',
+    passageId: state.passage && state.passage.shareId || undefined,
+    doChinhXac: best ? best.effectivePercent : 0,
+    soLanDocLai: state.attempts.length,
+    tuSai: wrongRemaining,
+    ghiAm: attempt ? attempt.audioBase64 : null,
+    quizAnswers: state.quizAnswers || [],
+    quizScore: state.quizResult ? state.quizResult.correct : undefined,
+    quizTotal: state.quizResult ? state.quizResult.total : undefined,
+    thoiGianNop: new Date().toISOString()
+  };
+}
+
+function saveResultOnline(payload){
+  var input={
+    studentName:payload.hoTen,
+    submissionId:payload.submissionId,
+    className:payload.lop || '',
+    passageTitle:payload.tenBai,
+    passageId:payload.passageId,
+    score:Number(payload.doChinhXac)||0,
+    stars:rewardStars(Number(payload.doChinhXac)||0),
+    attempts:Number(payload.soLanDocLai)||1,
+    wrongWords:payload.tuSai || []
+    ,quizAnswers:payload.quizAnswers || []
+    ,quizScore:payload.quizScore
+    ,quizTotal:payload.quizTotal
+  };
+  return fetch('/api/trpc/reading.submit',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    credentials:'include',
+    body:JSON.stringify({json:input})
+	  }).then(function(r){
+	    return r.text().then(function(text){
+	      var body=null;
+	      try { body=text ? JSON.parse(text) : null; } catch(ignore){}
+	      if(!r.ok){
+	        var message=body && body.error && body.error.json && body.error.json.message;
+	        throw new Error(message || 'Máy chủ từ chối lưu kết quả.');
+	      }
+	      return body;
+	    });
+          }).then(function(){
+            try{localStorage.removeItem('pending_reading_'+payload.submissionId);}catch(ignore){}
+	    $('submitStatus').textContent='✅ Đã lưu kết quả vào bảng thành tích của lớp.';
+	    $('submitStatus').className='status-line ok';
+	    loadAchievementsOnline();
+    return true;
+	  }).catch(function(err){
+            try{localStorage.setItem('pending_reading_'+payload.submissionId,JSON.stringify(payload));}catch(ignore){}
+	    $('submitStatus').textContent='❌ '+(err && err.message ? err.message : 'Chưa kết nối được máy chủ.')+' Kết quả vẫn giữ trên máy này, cô có thể thử nộp lại.';
+	    $('submitStatus').className='status-line err';
+	    return false;
+	  });
+}
+
+function retryPendingReadingResults(){
+  var pending=[];
+  try{for(var i=0;i<localStorage.length;i++){var key=localStorage.key(i)||'';if(key.indexOf('pending_reading_')===0){var value=JSON.parse(localStorage.getItem(key)||'null');if(value)pending.push(value);}}}catch(ignore){}
+  pending.slice(0,3).forEach(function(payload){saveResultOnline(payload);});
+}
+
+function loadAchievementsOnline(){return loadLeaderboard();}
+
+$('submitBtn').addEventListener('click', function(){
+	  if (state.savingResult) return;
+	  var url = getSheetUrl();
+	  var payload = buildPayload();
+  if (!payload.hoTen){
+    toast('Con hãy nhập họ tên trước khi nộp bài nhé!');
+    return;
+  }
+	  state.savingResult = true;
+	  $('submitBtn').disabled = true;
+	  saveResultOnline(payload).finally(function(){
+	    state.savingResult = false;
+	    $('submitBtn').disabled = false;
+	  });
+	  if (!url){
+	    return;
+	  }
+  $('submitStatus').textContent = 'Đang gửi bài cho Cô...';
+  $('submitStatus').className = 'status-line';
+  fetch(url, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify(payload)
+	  }).then(function(){
+	    $('submitStatus').textContent = '✅ Đã nộp bài thành công! Cô sẽ xem được kết quả của con.';
+	    $('submitStatus').className = 'status-line ok';
+	    toast('Nộp bài thành công! 🎉');
+  }).catch(function(){
+    $('submitStatus').textContent = 'Không gửi được, hãy kiểm tra kết nối mạng hoặc dùng nút Zalo.';
+	    $('submitStatus').className = 'status-line err';
+	  });
+});
+
+$('zaloBtn').addEventListener('click', function(){
+  var payload = buildPayload();
+  if (!payload.hoTen){
+    toast('Con hãy nhập họ tên trước khi nộp bài nhé!');
+    return;
+  }
+  var text = 'Kết quả luyện đọc\nHọ tên: '+payload.hoTen+'\nLớp: '+payload.lop+
+    '\nBài đọc: '+payload.tenBai+'\nĐộ chính xác: '+payload.doChinhXac+'%'+
+    '\nSố lần luyện đọc lại: '+payload.soLanDocLai+
+    (payload.tuSai.length ? ('\nTừ cần luyện thêm: '+payload.tuSai.join(', ')) : '');
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).catch(function(){});
+  }
+  window.open('https://zalo.me/', '_blank');
+  toast('Đã copy kết quả — hãy dán vào Zalo để gửi Cô nhé!');
+});
+
+/* ============================================================
+   PIN LOCK / TEACHER VIEW TOGGLE
+   ============================================================ */
+function getPin(){ return localStorage.getItem('gv_pin') || '1234'; }
+function getAuthMe(){
+  return fetch('/api/trpc/auth.me',{credentials:'include'}).then(function(r){
+    return r.json().then(function(body){return body&&body.result&&body.result.data&&body.result.data.json||null;});
+  });
+}
+function startTeacherLogin(){ window.location.href='/api/auth/login'; }
+$('lockBtn').addEventListener('click', function(){
+  getAuthMe().then(function(user){if(!document.body)return;user?openTeacherView(user):startTeacherLogin();}).catch(function(){if(document.body)startTeacherLogin();});
+});
+$('pinCancelBtn').addEventListener('click', function(){
+  $('pinModalOverlay').classList.add('hidden');
+});
+$('pinInput').addEventListener('keydown', function(e){
+  if (e.key === 'Enter') $('pinOkBtn').click();
+});
+$('pinOkBtn').addEventListener('click', function(){
+  if ($('pinInput').value === getPin()){
+    $('pinModalOverlay').classList.add('hidden');
+    openTeacherView();
+  } else {
+    $('pinError').textContent = 'Mã PIN không đúng, thử lại nhé.';
+  }
+});
+if($('teacherLogoutBtn')) $('teacherLogoutBtn').addEventListener('click', function(){
+  fetch('/api/trpc/auth.logout',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify({json:null})})
+    .finally(function(){window.location.reload();});
+});
+
+var assignedPassages=[];
+function applyTeacherPassage(p){
+  if(!p || !p.title || !p.content) return;
+  assignedPassages=assignedPassages.filter(function(item){return item.shareId!==p.shareId;});
+  assignedPassages.unshift(p);
+  state.passage=p;
+  state.sharedPassage=p;
+  state.sharedPassageId=p.shareId || null;
+  saveLocalPassage(p);
+  $('pTitle').value=p.title||'';
+  $('pContent').value=p.content||'';
+  $('pAuthor').value=p.author||'';
+  $('currentReportPassage').textContent=p.title||'bài đang mở';
+  $('shareUrl').value=p.shareId ? (window.location.origin+'/?baiId='+encodeURIComponent(p.shareId)) : '';
+  renderPassage(p);
+  initQuizEditor();
+}
+function loadAssignedPassages(){
+  var select=$('assignedPassageSelect');
+  if(!select) return;
+  fetch('/api/trpc/passage.mine?input='+encodeURIComponent(JSON.stringify({json:{}})),{credentials:'include'})
+    .then(function(r){if(!r.ok)throw new Error('passage list failed');return r.json();})
+    .then(function(body){
+      var rows=body&&body.result&&body.result.data&&body.result.data.json;
+      if(!Array.isArray(rows))throw new Error('invalid passage list');
+      assignedPassages=rows;
+      select.innerHTML='<option value="">➕ Tạo bài giao mới</option>'+rows.map(function(p){return '<option value="'+escapeHtml(p.shareId)+'">'+escapeHtml(p.title)+' · cập nhật '+escapeHtml(new Date(p.updatedAt||p.createdAt).toLocaleDateString('vi-VN'))+'</option>';}).join('');
+      var current=state.passage&&state.passage.shareId ? state.passage.shareId : (rows[0]&&rows[0].shareId);
+      if(current){select.value=current;var selected=rows.find(function(p){return p.shareId===current;});if(selected)applyTeacherPassage(selected);}
+    }).catch(function(){select.innerHTML='<option value="">Không tải được danh sách bài đã giao — thử Tải lại</option>';});
+  select.onchange=function(){
+    var selected=assignedPassages.find(function(p){return p.shareId===select.value;});
+    if(selected) applyTeacherPassage(selected);
+    else { $('pTitle').value='';$('pContent').value='';$('pAuthor').value='';$('shareUrl').value=''; }
+  };
+}
+function openTeacherView(user){
+  $('studentView').classList.add('hidden');
+  $('teacherView').classList.remove('hidden');
+  if($('teacherAccountStatus')) $('teacherAccountStatus').textContent=(user&&user.name||user&&user.email||'Giáo viên')+' · dữ liệu riêng của tài khoản này';
+  $('sheetUrl').value = getSheetUrl();
+  if (state.passage){
+    $('pTitle').value = state.passage.title || '';
+    $('pContent').value = state.passage.content || '';
+    $('pAuthor').value = state.passage.author || '';
+    $('currentReportPassage').textContent = state.passage.title || 'bài đang mở';
+  }
+  $('praiseText').value=state.teacherSettings.praise || '';
+  populateVoiceOptions(('speechSynthesis' in window)?speechSynthesis.getVoices():[]);
+  initQuizEditor();
+  fetch('/api/trpc/passage.claimLegacy',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify({json:null})})
+    .finally(function(){if(document.body){loadAssignedPassages();loadClassData();}});
+}
+$('closeTeacherBtn').addEventListener('click', function(){
+  $('teacherView').classList.add('hidden');
+  $('studentView').classList.remove('hidden');
+});
+
+$('saveSheetBtn').addEventListener('click', function(){
+  var url = $('sheetUrl').value.trim();
+  localStorage.setItem('gv_sheet_url', url);
+  $('sheetStatus').textContent = url ? 'Đã lưu đường link kết nối.' : 'Đã xoá đường link kết nối.';
+  $('sheetStatus').className = 'status-line ok';
+});
+
+function readAudioAsDataUrl(file){
+  return new Promise(function(resolve,reject){
+    var reader=new FileReader();
+    reader.onload=function(){resolve(String(reader.result||''));};
+    reader.onerror=reject;
+    reader.readAsDataURL(file);
+  });
+}
+function uploadTeacherAudio(file){
+  if (!file) return Promise.resolve('');
+  if (!/^audio\//i.test(file.type)){ return Promise.reject(new Error('Tệp đã chọn không phải audio.')); }
+  if (file.size>15*1024*1024){ return Promise.reject(new Error('Audio tối đa 15 MB để học sinh mở nhanh trên điện thoại.')); }
+  return readAudioAsDataUrl(file).then(function(dataUrl){
+    return fetch('/api/teacher/upload-audio',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fileName:file.name,contentType:file.type,dataUrl:dataUrl})});
+  }).then(function(r){return r.json().then(function(data){if(!r.ok||!data.url)throw new Error(data.message||'Không tải được audio.');return data.url;});});
+}
+$('savePassageBtn').addEventListener('click', function(){
+  var p=passageFromTeacherForm();
+  var file=$('pAudio').files && $('pAudio').files[0];
+  if(!p.title.trim()||!p.content.trim()){$('passageStatus').textContent='Vui lòng nhập đủ Tựa bài và Nội dung.';$('passageStatus').className='status-line err';return;}
+  var btn=$('savePassageBtn'); btn.disabled=true; btn.textContent=file?'⏳ Đang tải audio...':'🤖 Đang tạo bài tập AI...';
+  if(file){$('audioStatus').textContent='Đang tải audio lên kho dùng chung...';$('audioStatus').className='status-line';}
+  uploadTeacherAudio(file).then(function(url){
+    if(url && isUsableAudioUrl(url))p.audioUrl=url;
+    p.shareId=p.shareId || newPassageId();
+    return savePassageOnline(p,true).then(function(){
+      saveLocalPassage(p); state.sharedPassage=p; state.sharedPassageId=p.shareId; renderPassage(p); $('pAudio').value='';
+      var message=p.aiGenerated?'✅ Đã lưu bài đọc và 5 câu hỏi do AI tạo trên máy chủ.':'✅ Đã lưu bài đọc và bộ câu hỏi dự phòng trên máy chủ.';
+      if(p.audioUrl) message += ' Audio riêng cũng đã sẵn sàng.';
+      else message += ' Đang tạo giọng đọc nữ miền Nam...';
+      $('passageStatus').textContent=message; $('passageStatus').className='status-line ok';
+      makeShareLink();
+      var audioReady=p.audioUrl?Promise.resolve(p.audioUrl):requestPassageAudio(p);
+      return audioReady.then(function(audioUrl){
+        p.audioUrl=audioUrl;saveLocalPassage(p);state.sharedPassage=p;state.passage.audioUrl=audioUrl;updateVoiceStatus();
+        $('passageStatus').textContent=message.replace(' Đang tạo giọng đọc nữ miền Nam...','')+' Audio giọng nữ miền Nam đã sẵn sàng.';
+        $('audioStatus').textContent='Audio giọng nữ miền Nam đã sẵn sàng cho học sinh.'; $('audioStatus').className='status-line ok';
+        var sheetUrl=getSheetUrl();
+        if(sheetUrl){return fetch(sheetUrl,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'setPassage',title:p.title,content:p.content,author:p.author,audioUrl:p.audioUrl})});}
+      }).catch(function(){
+        $('audioStatus').textContent='Bài đã lưu; máy chủ sẽ tạo audio khi học sinh bấm Nghe. Cô có thể thử lại sau.'; $('audioStatus').className='status-line';
+      });
+    });
+  }).catch(function(err){
+    $('passageStatus').textContent='Không lưu được audio: '+(err.message||'lỗi kết nối')+'. Bài đọc chưa bị xoá.';$('passageStatus').className='status-line err';
+  }).finally(function(){btn.disabled=false;btn.textContent='🤖 Lưu bài đọc và tạo bài tập AI';});
+});
+
+function passageFromTeacherForm(){
+  var p={title:$('pTitle').value.trim(),content:$('pContent').value,author:$('pAuthor').value.trim()};
+  var old=state.passage;
+  if(old && old.shareId) p.shareId=old.shareId;
+  if(old && old.title===p.title && old.content===p.content && (old.author||'')===p.author){
+    p.libraryWeek=old.libraryWeek;p.audioUrl=old.audioUrl;p.quiz=old.quiz;
+  }
+  return p;
+}
+function makeShareLink(){
+  var p=passageFromTeacherForm();
+  p.shareId=p.shareId || newPassageId();
+  p.quiz=getReadingQuiz(p);
+  p.audioUrl=sampleAudioFor(p);
+  if (!p.title || !p.content.trim()){
+    $('shareStatus').textContent = 'Vui lòng nhập Tựa bài và Nội dung trước nhé.';
+    $('shareStatus').className = 'status-line err';
+    return '';
+  }
+  var url = new URL(window.location.origin + '/');
+  url.searchParams.set('baiId', p.shareId);
+  var link = url.toString();
+  $('shareUrl').value = link;
+  if(state.passage && state.passage.title===p.title){state.passage.shareId=p.shareId;state.passage.quiz=p.quiz;saveLocalPassage(state.passage);}
+  savePassageOnline(p,false).then(function(){
+    $('shareStatus').textContent = 'Đã lưu bài giao. Link ngắn này luôn mở bài đọc và bài tập mới nhất khi cô chỉnh sửa.';
+    $('shareStatus').className = 'status-line ok';
+  }).catch(function(){
+    $('shareUrl').value = '';
+    $('shareStatus').textContent = 'Chưa tạo link vì bài chưa lưu được trên máy chủ. Cô kiểm tra mạng rồi bấm “Tạo link” lại nhé.';
+    $('shareStatus').className = 'status-line err';
+  });
+  return link;
+}
+
+$('makeShareBtn').addEventListener('click', makeShareLink);
+$('copyShareBtn').addEventListener('click', function(){
+  var link = $('shareUrl').value || makeShareLink();
+  if (!link) return;
+  function done(){
+    $('shareStatus').textContent = '✅ Đã copy link. Gửi link này cho học sinh nhé.';
+    $('shareStatus').className = 'status-line ok';
+    toast('Đã copy link bài đọc!');
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(link).then(done).catch(function(){
+      $('shareUrl').select(); toast('Hãy nhấn giữ vào link để sao chép.');
+    });
+  } else {
+    $('shareUrl').select();
+    try { document.execCommand('copy'); done(); } catch(e){ toast('Hãy nhấn giữ vào link để sao chép.'); }
+  }
+});
+
+$('savePinBtn').addEventListener('click', function(){
+  var pin = $('newPin').value.trim();
+  if (!/^\d{4}$/.test(pin)){
+    $('pinStatus').textContent = 'Mã PIN phải gồm đúng 4 chữ số.';
+    $('pinStatus').className = 'status-line err';
+    return;
+  }
+  localStorage.setItem('gv_pin', pin);
+  $('newPin').value = '';
+  $('pinStatus').textContent = 'Đã đổi mã PIN thành công.';
+  $('pinStatus').className = 'status-line ok';
+});
+
+$('saveTeacherSettingsBtn').addEventListener('click', function(){
+  state.teacherSettings.praise=$('praiseText').value.trim();
+  state.teacherSettings.voiceName=$('voiceSelect').value || 'auto';
+  saveTeacherSettings();
+  $('teacherSettingsStatus').textContent='Đã lưu lời nhận xét và giọng đọc cho cô giáo.';
+  $('teacherSettingsStatus').className='status-line ok';
+  toast('Đã lưu cài đặt cô giáo!');
+});
+$('saveQuizBtn').addEventListener('click', saveQuizEditor);
+
+/* ============================================================
+   TEACHER REPORT TABLE
+   ============================================================ */
+var classData = [];
+
+function updateReportFilters(){
+  function fillSelect(id, values, allLabel){
+    var select=$(id), previous=select.value;
+    var unique={};
+    values.forEach(function(value){
+      value=String(value||'').trim();
+      if (value) unique[value]=true;
+    });
+    var options=Object.keys(unique).sort(function(a,b){return a.localeCompare(b,'vi');});
+    select.innerHTML='<option value="all">'+allLabel+'</option>'+options.map(function(value){
+      return '<option value="'+escapeHtml(value)+'">'+escapeHtml(value)+'</option>';
+    }).join('');
+    select.value=(previous==='all'||options.indexOf(previous)<0)?'all':previous;
+  }
+  fillSelect('filterClass',classData.map(function(row){return row.lop;}),'Tất cả các lớp');
+  fillSelect('filterPassage',classData.map(function(row){return row.tenBai;}),'Tất cả bài đọc');
+}
+
+function pctClass(p){
+  p = Number(p) || 0;
+  if (p >= 85) return 'pct-high';
+  if (p >= 60) return 'pct-mid';
+  return 'pct-low';
+}
+
+function renderReportTable(list){
+  var body = $('reportBody');
+  body.innerHTML = '';
+  if (!list.length){
+    $('emptyNote').classList.remove('hidden');
+    return;
+  }
+  $('emptyNote').classList.add('hidden');
+  list.forEach(function(row){
+    var tr = document.createElement('tr');
+    var audioCell = '';
+    if (row.ghiAm){
+      audioCell = '<audio class="mini-audio" controls src="'+row.ghiAm+'"></audio>';
+    } else {
+      audioCell = '<span style="color:#bbb;">—</span>';
+    }
+    var timeDisplay = row.thoiGianNop ? String(row.thoiGianNop).replace('T',' ').slice(0,16) : '';
+    tr.innerHTML =
+      '<td>'+escapeHtml(String(row.hoTen||''))+'</td>' +
+      '<td>'+escapeHtml(String(row.lop||''))+'</td>' +
+      '<td>'+escapeHtml(String(row.tenBai||''))+'</td>' +
+      '<td><span class="pct-pill '+pctClass(row.doChinhXac)+'">'+(row.doChinhXac||0)+'%</span></td>' +
+      '<td>'+(row.soLanDocLai||0)+'</td>' +
+      '<td class="wrong-list">'+escapeHtml(String(row.tuSai||''))+'</td>' +
+      '<td>'+audioCell+'</td>' +
+      '<td>'+escapeHtml(timeDisplay)+'</td>' +
+      '<td><button type="button" class="btn btn-secondary report-detail-btn" data-report-id="'+String(row.id||'')+'">Xem</button></td>';
+    body.appendChild(tr);
+  });
+  body.querySelectorAll('.report-detail-btn').forEach(function(button){button.addEventListener('click',function(){showStudentDetail(button.getAttribute('data-report-id'));});});
+}
+
+function formatAnswer(value){
+  if(Array.isArray(value))return value.join(', ');
+  return value===undefined||value===null||value===''?'Chưa trả lời':String(value);
+}
+function showStudentDetail(id){
+  var row=classData.find(function(item){return String(item.id)===String(id);}), panel=$('studentDetailPanel');
+  if(!row||!panel)return;
+  var answers=Array.isArray(row.quizAnswers)?row.quizAnswers:[];
+  var history=classData.filter(function(item){return String(item.hoTen||'').trim().toLocaleLowerCase('vi')===String(row.hoTen||'').trim().toLocaleLowerCase('vi')&&String(item.lop||'')===String(row.lop||'')&&String(item.tenBai||'')===String(row.tenBai||'');});
+  panel.classList.remove('hidden');
+  panel.innerHTML='<b>Chi tiết bài làm: '+escapeHtml(row.hoTen)+' — lớp '+escapeHtml(row.lop||'')+'</b>'+
+    '<p><b>Lịch sử:</b> '+history.length+' lần nộp của học sinh này cho bài đang mở.</p>'+
+    '<ul>'+history.map(function(item,index){return '<li>Lần '+(history.length-index)+': đọc đúng '+Number(item.doChinhXac||0)+'%'+(item.quizScore===null||item.quizScore===undefined?'':', đọc hiểu '+item.quizScore+'/'+(item.quizTotal||'?'))+' — '+escapeHtml(String(item.thoiGianNop||''))+'</li>';}).join('')+'</ul>'+
+    '<p style="margin:6px 0">Bài: '+escapeHtml(row.tenBai||'')+' · Điểm đọc hiểu: '+(row.quizScore===null||row.quizScore===undefined?'Chưa chấm':String(row.quizScore)+'/'+String(row.quizTotal||'?'))+' · Nộp lúc: '+escapeHtml(String(row.thoiGianNop||''))+'</p>'+
+    (answers.length?'<ol>'+answers.map(function(item){var selected=item.type==='fill'?item.selected:(Array.isArray(item.selected)?item.selected.map(function(index){return item.options[index]||index;}):item.selected);var correct=item.type==='fill'?item.correctAnswer:(Array.isArray(item.correctAnswer)?item.correctAnswer.join(', '):item.correctAnswer);var ok=JSON.stringify(item.selected)===JSON.stringify(item.correct);return '<li style="margin:8px 0"><b>'+escapeHtml(String(item.question||''))+'</b><br>Học sinh chọn: '+escapeHtml(formatAnswer(selected))+'<br>Đáp án đúng: '+escapeHtml(formatAnswer(correct))+' — <strong style="color:'+(ok?'#267b55':'#ac463d')+'">'+(ok?'Đúng':'Chưa đúng')+'</strong></li>';}).join('')+'</ol>':'<p>Không có dữ liệu đáp án đọc hiểu trong lần nộp này.</p>')+
+    '<button type="button" class="btn btn-secondary" id="closeStudentDetail">Đóng chi tiết</button>';
+  $('closeStudentDetail').onclick=function(){panel.classList.add('hidden');};
+  panel.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function loadClassData(){
+  // Database của ứng dụng là nguồn chính thức. Google Sheet cũ có thể chỉ chứa
+  // một phần dữ liệu nên không được dùng để thay thế bảng kết quả của lớp.
+  loadClassDataOnline();
+}
+
+function loadClassDataOnline(){
+  $('listStatus').textContent = 'Đang tải kết quả từ máy chủ ứng dụng...';
+  $('listStatus').className = 'status-line';
+  fetch('/api/trpc/reading.list?input='+encodeURIComponent(JSON.stringify({json:{passageId:state.passage && state.passage.shareId || undefined,passageTitle:state.passage && state.passage.title || undefined}})),{credentials:'include'})
+    .then(function(r){if(!r.ok) throw new Error('list failed'); return r.json();})
+    .then(function(body){
+      var rows=body && body.result && body.result.data && body.result.data.json;
+      if (!Array.isArray(rows)) throw new Error('invalid list');
+      classData=rows.map(function(row){
+        return {
+          id:row.id,
+          passageId:row.passageId || '',
+          hoTen:row.studentName || 'Học sinh',
+          lop:row.className || '',
+          tenBai:row.passageTitle || 'Bài đọc',
+          doChinhXac:Number(row.score)||0,
+          soLanDocLai:Number(row.attempts)||0,
+          tuSai:row.wrongWords || '',
+          quizAnswers:(function(){try{return row.quizAnswers?JSON.parse(row.quizAnswers):[];}catch(ignore){return [];}})(),
+          quizScore:row.quizScore,
+          quizTotal:row.quizTotal,
+          ghiAm:'',
+          thoiGianNop:row.createdAt || ''
+        };
+      }).filter(function(row){return !state.passage || !state.passage.title || row.tenBai===state.passage.title || row.passageId===state.passage.shareId;});
+      updateReportFilters();
+      $('listStatus').textContent='Đã tải '+classData.length+' kết quả của bài đang mở.';
+      $('listStatus').className='status-line ok';
+      applyFilterAndRender();
+    })
+    .catch(function(){
+      $('listStatus').textContent='Không tải được dữ liệu. Vui lòng thử lại sau.';
+      $('listStatus').className='status-line err';
+      classData=[];
+      renderReportTable([]);
+    });
+}
+
+function applyFilterAndRender(){
+  var q = $('searchStu').value.trim().toLowerCase();
+  var selectedClass=$('filterClass').value;
+  var selectedPassage=$('filterPassage').value;
+  var filtered = !q ? classData : classData.filter(function(row){
+    return String(row.hoTen||'').toLowerCase().indexOf(q) > -1;
+  });
+  filtered=filtered.filter(function(row){
+    return (selectedClass==='all'||String(row.lop||'')===selectedClass) &&
+      (selectedPassage==='all'||String(row.tenBai||'')===selectedPassage);
+  });
+  renderReportTable(filtered);
+}
+
+$('refreshBtn').addEventListener('click', loadClassData);
+$('searchStu').addEventListener('input', applyFilterAndRender);
+$('filterClass').addEventListener('change', applyFilterAndRender);
+$('filterPassage').addEventListener('change', applyFilterAndRender);
+
+var leaderboardRun=0;
+function loadLeaderboard(){
+  var request=++leaderboardRun, cls=$('stuClass').value.trim(), p=state.passage;
+  var list=$('topThreeList'), status=$('topThreeStatus');
+  list.innerHTML='';
+  if(!cls || !p){status.textContent='Con nhập lớp phía trên để xem Top 3 của bài đang mở.';return Promise.resolve();}
+  status.textContent='Đang tải Top 3 lớp '+cls+' — '+p.title+'...';
+  return fetch('/api/trpc/reading.leaderboard?input='+encodeURIComponent(JSON.stringify({json:{className:cls,passageTitle:p.title,passageId:p.shareId || undefined}})),{credentials:'include'})
+    .then(function(r){if(!r.ok)throw new Error('request failed');return r.json();})
+    .then(function(body){
+      if(request!==leaderboardRun)return;
+      var rows=body && body.result && body.result.data && body.result.data.json;
+      if(!Array.isArray(rows))throw new Error('invalid response');
+      status.textContent=rows.length?'Lớp '+cls+' — '+p.title:'Chưa có kết quả đã nộp cho lớp '+cls+' ở bài này. Con hãy luyện đọc và nộp bài nhé!';
+      list.innerHTML=rows.map(function(row){return '<li class="top-card"><span class="top-rank">Hạng '+Number(row.rank)+'</span><strong>'+escapeHtml(String(row.studentName))+'</strong><span class="top-score">'+(Number(row.score)/10).toFixed(1)+'<small>/10</small></span><span>'+Number(row.score)+'% từ đọc đúng</span></li>';}).join('');
+    }).catch(function(){if(request!==leaderboardRun)return;status.textContent='Chưa kết nối được bảng Top 3. Con bấm tải lại nhé.';list.innerHTML='';});
+}
+$('refreshTopThree').addEventListener('click',loadLeaderboard);
+$('stuClass').addEventListener('change',function(){localStorage.setItem('last_stu_class',$('stuClass').value.trim());loadLeaderboard();});
+
+/* ============================================================
+   INIT
+   ============================================================ */
+function init(){
+  initReadingLibrary();
+  loadTeacherSettings();
+  loadAchievements();
+  initPassageFromUrlParam();
+  initSampleVoice();
+  loadPassage();
+
+  var lastName = localStorage.getItem('last_stu_name');
+  var lastClass = localStorage.getItem('last_stu_class');
+  if (lastName) $('stuName').value = lastName;
+  if (lastClass) $('stuClass').value = lastClass;
+  loadLeaderboard();
+  retryPendingReadingResults();
+
+  if (!recognitionSupported){
+    $('micHint').textContent = 'Trình duyệt này chưa hỗ trợ nhận diện giọng nói. Hãy dùng Google Chrome trên máy tính hoặc điện thoại Android.';
+  }
+}
+
+init();
+
+})();
+</script>
+</body>
+</html>
